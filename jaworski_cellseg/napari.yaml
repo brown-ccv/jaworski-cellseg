@@ -2,7 +2,11 @@
 name: jaworski-cellseg
 display_name: Jaworski Lab Cellseg
 contributions:
+  commands:
+    - id: jaworski-cellseg.create_combined_widget
+      title: Create Jaworski lab widget
+      python_name: jaworski_cellseg:create_combined_widget
   widgets:
-    - command: jaworski_cellseg.create_combined_widget
+    - command: jaworski-cellseg.create_combined_widget
       display_name: Jaworski lab widget
       autogenerate: false

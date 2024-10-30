@@ -20,6 +20,3 @@ dependencies = [
 [build-system]
 requires = ["setuptools", "wheel"]
 build-backend = "setuptools.build_meta"
-
-[entry-points."napari.manifest"]
-jaworski_cellseg = "jaworski_cellseg:napari.yml"

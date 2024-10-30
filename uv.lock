@@ -1,16 +1,8 @@
 version = 1
 requires-python = ">=3.9"
-resolution-markers = [
-    "python_full_version < '3.10' and platform_system == 'Windows'",
-    "python_full_version < '3.10' and platform_system != 'Windows'",
-    "python_full_version == '3.10.*' and platform_system == 'Windows'",
-    "python_full_version == '3.10.*' and platform_system != 'Windows'",
-    "python_full_version == '3.11.*' and platform_system == 'Windows'",
-    "python_full_version == '3.11.*' and platform_system != 'Windows'",
-    "python_full_version == '3.12.*' and platform_system == 'Windows'",
-    "python_full_version == '3.12.*' and platform_system != 'Windows'",
-    "python_full_version >= '3.13' and platform_system == 'Windows'",
-    "python_full_version >= '3.13' and platform_system != 'Windows'",
+environment-markers = [
+    "platform_system != 'Windows'",
+    "platform_system == 'Windows'",
 ]
 
 [[package]]
@@ -229,11 +221,14 @@ version = "1.1.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "bioio-base" },
+    { name = "dask" },
     { name = "dask", extra = ["array"] },
     { name = "fsspec" },
+    { name = "imageio" },
     { name = "imageio", extra = ["ffmpeg"] },
     { name = "ngff-zarr" },
     { name = "numpy" },
+    { name = "ome-types" },
     { name = "ome-types", extra = ["lxml"] },
     { name = "ome-zarr" },
     { name = "semver" },
@@ -250,6 +245,7 @@ name = "bioio-base"
 version = "1.0.4"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
+    { name = "dask" },
     { name = "dask", extra = ["array", "distributed"] },
     { name = "fsspec" },
     { name = "numpy" },
@@ -1467,20 +1463,6 @@ dependencies = [
     { name = "siphash24" },
 ]
 
-[package.metadata]
-requires-dist = [
-    { name = "bioio", specifier = ">=1.1.0" },
-    { name = "black", specifier = ">=24.10.0" },
-    { name = "magicgui", specifier = ">=0.9.1" },
-    { name = "napari", specifier = ">=0.5.4" },
-    { name = "napari-cellseg3d", specifier = ">=0.2.0" },
-    { name = "pyqt5-qt5", marker = "platform_system != 'Windows'", specifier = "==5.15.15" },
-    { name = "pyqt5-qt5", marker = "platform_system == 'Windows'", specifier = "==5.15.2" },
-    { name = "scikit-image", specifier = ">=0.22.0" },
-    { name = "siphash", specifier = ">=0.0.1" },
-    { name = "siphash24", specifier = ">=1.7" },
-]
-
 [[package]]
 name = "jedi"
 version = "0.19.1"
@@ -1834,6 +1816,7 @@ dependencies = [
     { name = "docstring-parser" },
     { name = "psygnal" },
     { name = "qtpy" },
+    { name = "superqt" },
     { name = "superqt", extra = ["iconify"] },
     { name = "typing-extensions" },
 ]
@@ -2200,6 +2183,7 @@ dependencies = [
     { name = "appdirs" },
     { name = "cachey" },
     { name = "certifi" },
+    { name = "dask" },
     { name = "dask", extra = ["array"] },
     { name = "imageio" },
     { name = "jsonschema" },
@@ -2221,6 +2205,7 @@ dependencies = [
     { name = "pyopengl" },
     { name = "pyyaml" },
     { name = "qtpy" },
+    { name = "scikit-image" },
     { name = "scikit-image", extra = ["data"] },
     { name = "scipy" },
     { name = "superqt" },
@@ -2253,7 +2238,9 @@ dependencies = [
     { name = "imagecodecs" },
     { name = "itk" },
     { name = "matplotlib" },
+    { name = "monai" },
     { name = "monai", extra = ["einops", "nibabel"] },
+    { name = "napari" },
     { name = "napari", extra = ["all"] },
     { name = "numpy" },
     { name = "pyclesperanto-prototype" },
@@ -2344,6 +2331,7 @@ name = "ngff-zarr"
 version = "0.8.7"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
+    { name = "dask" },
     { name = "dask", extra = ["array"] },
     { name = "itkwasm" },
     { name = "itkwasm-downsample" },
@@ -2658,6 +2646,7 @@ dependencies = [
     { name = "aiohttp" },
     { name = "dask" },
     { name = "distributed" },
+    { name = "fsspec" },
     { name = "fsspec", extra = ["s3"] },
     { name = "numpy" },
     { name = "requests" },
@@ -3307,12 +3296,8 @@ wheels = [
 name = "pyqt5-qt5"
 version = "5.15.2"
 source = { registry = "https://pypi.org/simple" }
-resolution-markers = [
-    "python_full_version < '3.10' and platform_system == 'Windows'",
-    "python_full_version == '3.10.*' and platform_system == 'Windows'",
-    "python_full_version == '3.11.*' and platform_system == 'Windows'",
-    "python_full_version == '3.12.*' and platform_system == 'Windows'",
-    "python_full_version >= '3.13' and platform_system == 'Windows'",
+environment-markers = [
+    "platform_system == 'Windows'",
 ]
 wheels = [
     { url = "https://files.pythonhosted.org/packages/1c/7e/ce7c66a541a105fa98b41d6405fe84940564695e29fc7dccf6d9e8c5f898/PyQt5_Qt5-5.15.2-py3-none-win32.whl", hash = "sha256:9cc7a768b1921f4b982ebc00a318ccb38578e44e45316c7a4a850e953e1dd327", size = 43447358 },
@@ -3323,12 +3308,8 @@ wheels = [
 name = "pyqt5-qt5"
 version = "5.15.15"
 source = { registry = "https://pypi.org/simple" }
-resolution-markers = [
-    "python_full_version < '3.10' and platform_system != 'Windows'",
-    "python_full_version == '3.10.*' and platform_system != 'Windows'",
-    "python_full_version == '3.11.*' and platform_system != 'Windows'",
-    "python_full_version == '3.12.*' and platform_system != 'Windows'",
-    "python_full_version >= '3.13' and platform_system != 'Windows'",
+environment-markers = [
+    "platform_system != 'Windows'",
 ]
 wheels = [
     { url = "https://files.pythonhosted.org/packages/4a/6e/a5789bac6310208756fc6a36fd7e01caa86ea6ae7abbb5922dcea003a215/PyQt5_Qt5-5.15.15-py3-none-macosx_10_13_x86_64.whl", hash = "sha256:eb74072935958a830887115b1de1ff26341fc2d5881b28129de39612b10a260e", size = 39147807 },
