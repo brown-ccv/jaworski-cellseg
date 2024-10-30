@@ -1,0 +1,25 @@
+[project]
+name = "jaworski-cellseg"
+version = "0.1.0"
+description = "Cell labeling and counting for Jaworski Lab datasets"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "bioio>=1.1.0",
+    "black>=24.10.0",
+    "napari>=0.5.4",
+    "pyqt5-qt5==5.15.2 ; platform_system == 'Windows'",
+    "pyqt5-qt5==5.15.15 ; platform_system != 'Windows'",
+    "napari-cellseg3d>=0.2.0",
+    "scikit-image>=0.22.0",
+    "magicgui>=0.9.1",
+    "siphash>=0.0.1",
+    "siphash24>=1.7",
+]
+
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[entry-points."napari.manifest"]
+jaworski_cellseg = "jaworski_cellseg:napari.yml"

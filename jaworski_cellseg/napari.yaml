@@ -1,0 +1,8 @@
+# src/my_napari_plugin/napari.yaml
+name: jaworski-cellseg
+display_name: Jaworski Lab Cellseg
+contributions:
+  widgets:
+    - command: jaworski_cellseg.create_combined_widget
+      display_name: Jaworski lab widget
+      autogenerate: false
