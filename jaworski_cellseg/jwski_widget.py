@@ -8,7 +8,7 @@ from .pre_process_data_widget import create_pre_process_data_widget
 from .label_counting_widget import create_label_counting_widget
 
 
-class CustomWidget(QWidget):
+class JaworskiWidget(QWidget):
     def __init__(self, napari_viewer: 'napari.viewer.Viewer', parent=None):
         super().__init__(parent)
         self.viewer = napari_viewer

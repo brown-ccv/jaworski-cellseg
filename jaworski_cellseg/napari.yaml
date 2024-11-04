@@ -4,7 +4,7 @@ contributions:
   commands:
     - id: jaworski-cellseg.load
       title: Create Jaworski lab widget
-      python_name: jaworski_cellseg.jwski_widget:CustomWidget
+      python_name: jaworski_cellseg.jwski_widget:JaworskiWidget
   widgets:
     - command: jaworski-cellseg.load
       display_name: Jaworski lab cell seg
