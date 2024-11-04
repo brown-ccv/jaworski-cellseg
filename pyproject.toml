@@ -15,6 +15,8 @@ dependencies = [
     "magicgui>=0.9.1",
     "siphash>=0.0.1",
     "siphash24>=1.7",
+    "scyjava>=1.10.0",
+    "bioio-bioformats>=1.0.0",
 ]
 
 [build-system]

@@ -21,7 +21,7 @@ def jwslab_load_bio_data(napari_viewer, file_path):
 
 def create_load_data_widget(viewer: napari.Viewer):
     @magicgui(
-        call_button="Select BioImage",
+        call_button="Open BioImage",
         auto_call=False,
         file_path={"label": "Choose a file", "mode": "r"},
     )
