@@ -82,7 +82,7 @@ def create_pre_process_data_widget(viewer: napari.Viewer, inferer_widget: Infere
             binary_map_threshold,
         )
         viewer.add_image(
-            binary_mask, name=f"cloud binray mask perc={binary_map_threshold}"
+            binary_mask, name=f"cloud binary mask perc={binary_map_threshold}"
         )
         viewer.add_image(result_image, name="Pre processed data")
         ## In case more layers are added, lets set the Tiff layer by default

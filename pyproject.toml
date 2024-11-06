@@ -17,6 +17,7 @@ dependencies = [
     "siphash24>=1.7",
     "scyjava>=1.10.0",
     "bioio-bioformats>=1.0.0",
+    "torch>=2.5.1",
 ]
 
 [build-system]
