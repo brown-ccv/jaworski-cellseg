@@ -4,7 +4,7 @@ from pathlib import Path
 from bioio import BioImage
 
 
-def jwslab_load_bio_data(napari_viewer: napari.Viewer, file_path: str):
+def jwslab_load_bio_data(napari_viewer: napari.Viewer, file_path: Path):
     print("enter jwslab_pre_process_file")
     try:
         image = BioImage(file_path)
@@ -32,6 +32,6 @@ def create_load_data_widget(viewer: napari.Viewer, physical_sizes: dict):
             key: getattr(image_metadata.pixels, f"physical_size_{key}")
             for key in ["x", "y", "z"]
         }
-        physical_sizes.udpate(xyz)
+        physical_sizes.update(xyz)
 
     return select_bio_data_widget

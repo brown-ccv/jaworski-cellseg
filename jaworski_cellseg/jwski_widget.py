@@ -32,13 +32,16 @@ class JaworskiWidget(QWidget):
             self.viewer, inferer_widget
         )
         count_widget = create_label_counting_widget(self.viewer, self.physical_sizes)
-
-        # # Add both widgets to the main layout
-        for widget in [data_widget, pre_process_data_widget, count_widget]:
-            layout.addWidget(widget.native)
-
         self.configure_inferer_widget(inferer_widget)
-        layout.addWidget(inferer_widget)
+
+        # # Add widgets to the main layout
+        for widget in [
+            data_widget.native,
+            pre_process_data_widget.native,
+            count_widget.native,
+            inferer_widget,
+        ]:
+            layout.addWidget(widget)
 
     def configure_inferer_widget(self, inferer_widget):
         """

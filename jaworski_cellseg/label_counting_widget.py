@@ -2,6 +2,8 @@ from magicgui import magicgui
 import napari
 from skimage.measure import regionprops
 import pandas as pd
+from typing import Optional
+from pathlib import Path
 
 
 def calculate_center_pixel(bbox):
@@ -13,12 +15,12 @@ def calculate_center_pixel(bbox):
     )
 
 
-def calculate_volume(region, physical_sizes):
+def calculate_volume(region, physical_sizes: dict):
     voxel_volume = physical_sizes["x"] * physical_sizes["y"] * physical_sizes["z"]
     return region.area * voxel_volume
 
 
-def extract_region_data(region, physical_sizes):
+def extract_region_data(region, physical_sizes: dict):
     region_data = {
         "label": region.label,
         "area": region.area,
@@ -34,7 +36,7 @@ def extract_region_data(region, physical_sizes):
     return region_data
 
 
-def generate_statistics(regions, physical_sizes, save_file_path):
+def generate_statistics(regions: list, physical_sizes: dict, save_file_path: Path):
     # Extract data for each region and compile into a DataFrame
     data = [extract_region_data(region, physical_sizes) for region in regions]
     df = pd.DataFrame(data)
@@ -60,13 +62,14 @@ def create_label_counting_widget(viewer: napari.Viewer, physical_sizes: dict):
         save_results={
             "widget_type": "FileEdit",
             "mode": "w",
+            "filter": "*.csv",
         },  # Dynamic choices will be set later
     )
     def cell_counting_widget(
-        label_layer_name: str = None,
-        binary_layer_name: str = None,
-        total_count: str = "",
-        save_results: str = None,
+        label_layer_name: Optional[str] = None,
+        binary_layer_name: Optional[str] = None,
+        total_count: Optional[str] = "",
+        save_results: Optional[str] = None,
     ):
         labeled_layer = viewer.layers[label_layer_name]
         binary_mask = viewer.layers[binary_layer_name]
@@ -81,8 +84,15 @@ def create_label_counting_widget(viewer: napari.Viewer, physical_sizes: dict):
 
         file_path = cell_counting_widget.save_results.value
         if file_path:
-            with open(file_path, "w") as f:
-                generate_statistics(filtered_labels_regions, physical_sizes, file_path)
+            path = Path(file_path)
+            # Ensure the file has a ".csv" extension
+            if not path.suffix:
+                path = path.with_suffix(
+                    ".csv"
+                )  # Add default ".csv" extension if missing
+
+            with path.open("w") as f:
+                generate_statistics(filtered_labels_regions, physical_sizes, path)
 
         viewer.status = f"Results saved to {file_path}"
 
