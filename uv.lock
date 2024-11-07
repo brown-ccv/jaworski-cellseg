@@ -1487,7 +1487,6 @@ source = { editable = "." }
 dependencies = [
     { name = "bioio" },
     { name = "bioio-bioformats" },
-    { name = "black" },
     { name = "magicgui" },
     { name = "napari" },
     { name = "napari-cellseg3d" },
@@ -1500,11 +1499,16 @@ dependencies = [
     { name = "torch" },
 ]
 
+[package.optional-dependencies]
+dev = [
+    { name = "black" },
+]
+
 [package.metadata]
 requires-dist = [
     { name = "bioio", specifier = ">=1.1.0" },
     { name = "bioio-bioformats", specifier = ">=1.0.0" },
-    { name = "black", specifier = ">=24.10.0" },
+    { name = "black", marker = "extra == 'dev'", specifier = ">=24.10.0" },
     { name = "magicgui", specifier = ">=0.9.1" },
     { name = "napari", specifier = ">=0.5.4" },
     { name = "napari-cellseg3d", specifier = ">=0.2.0" },

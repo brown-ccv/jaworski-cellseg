@@ -4,44 +4,39 @@ from skimage.measure import regionprops
 import pandas as pd
 
 
+def calculate_center_pixel(bbox):
+    min_slice, min_row, min_col, max_slice, max_row, max_col = bbox
+    return (
+        (min_col + max_col) // 2,
+        (min_row + max_row) // 2,
+        (min_slice + max_slice) // 2,
+    )
+
+
+def calculate_volume(region, physical_sizes):
+    voxel_volume = physical_sizes["x"] * physical_sizes["y"] * physical_sizes["z"]
+    return region.area * voxel_volume
+
+
+def extract_region_data(region, physical_sizes):
+    region_data = {
+        "label": region.label,
+        "area": region.area,
+        "centroid_row": region.centroid[2],
+        "centroid_col": region.centroid[1],
+        "centroid_depth": region.centroid[0],
+        "bbox": region.bbox,
+    }
+    region_data["center_x"], region_data["center_y"], region_data["center_z"] = (
+        calculate_center_pixel(region.bbox)
+    )
+    region_data["volume"] = calculate_volume(region, physical_sizes)
+    return region_data
+
+
 def generate_statistics(regions, physical_sizes, save_file_path):
-    # Initialize a list to hold the properties data
-    data = []
-
-    # Loop through each region and filter for the labels of interest
-    for region in regions:
-        # Extract properties and add them to the data list as a dictionary
-        region_data = {
-            "label": region.label,
-            "area": region.area,
-            "centroid_row": region.centroid[2],
-            "centroid_col": region.centroid[1],
-            "centroid_depth": region.centroid[0],
-            "bbox": region.bbox,  # Add more properties as needed
-        }
-
-        min_slice, min_row, min_col, max_slice, max_row, max_col = region.bbox
-
-        # Calculate the center pixel of the bounding box
-        center_pixel = (
-            (min_col + max_col) // 2,
-            (min_row + max_row) // 2,
-            (min_slice + max_slice) // 2,
-        )
-        region_data["center_x"] = center_pixel[0]
-        region_data["center_y"] = center_pixel[1]
-        region_data["center_z"] = center_pixel[2]
-
-        voxel_count = region.area  # This is the number of voxels in the region
-        voxel_volume = (
-            physical_sizes["x"] * physical_sizes["y"] * physical_sizes["z"]
-        )  # Volume of a single voxel in µm³
-        total_volume_um3 = voxel_count * voxel_volume  # Total volume in µm³
-
-        region_data["volume"] = total_volume_um3
-
-        data.append(region_data)
-    # Convert the data list to a DataFrame
+    # Extract data for each region and compile into a DataFrame
+    data = [extract_region_data(region, physical_sizes) for region in regions]
     df = pd.DataFrame(data)
     # Save the DataFrame to a CSV file
     df.to_csv(save_file_path, index=False)
@@ -84,12 +79,12 @@ def create_label_counting_widget(viewer: napari.Viewer, physical_sizes: dict):
 
         viewer.add_labels(result_image, name=f"{count} Filtered Labled layer")
 
-        if cell_counting_widget.save_results.value:
-            file_path = cell_counting_widget.save_results.value
+        file_path = cell_counting_widget.save_results.value
+        if file_path:
             with open(file_path, "w") as f:
                 generate_statistics(filtered_labels_regions, physical_sizes, file_path)
 
-            viewer.status = f"Results saved to {file_path}"
+        viewer.status = f"Results saved to {file_path}"
 
     def update_layer_dropdown(event=None):
         # Get names of all label layers in the viewer

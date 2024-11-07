@@ -6,7 +6,6 @@ readme = "README.md"
 requires-python = ">=3.9"
 dependencies = [
     "bioio>=1.1.0",
-    "black>=24.10.0",
     "napari>=0.5.4",
     "pyqt5-qt5==5.15.2 ; platform_system == 'Windows'",
     "pyqt5-qt5==5.15.15 ; platform_system != 'Windows'",
@@ -19,6 +18,14 @@ dependencies = [
     "bioio-bioformats>=1.0.0",
     "torch>=2.5.1",
 ]
+
+[project.optional-dependencies]
+dev = [
+ "black>=24.10.0",
+]
+
+[tool.ruff]
+line-length = 88
 
 [build-system]
 requires = ["setuptools", "wheel"]
