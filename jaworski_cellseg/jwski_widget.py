@@ -5,6 +5,7 @@ from qtpy.QtWidgets import QVBoxLayout, QWidget
 from .load_data_widget import create_load_data_widget
 from .pre_process_data_widget import create_pre_process_data_widget
 from .label_counting_widget import create_label_counting_widget
+from .subregion_selection_widget import create_region_selection_widget
 
 
 class JaworskiWidget(QWidget):
@@ -30,6 +31,7 @@ class JaworskiWidget(QWidget):
             self.viewer, inferer_widget
         )
         count_widget = create_label_counting_widget(self.viewer, self.physical_sizes)
+        region_selection_widget = create_region_selection_widget(self.viewer)
         self.configure_inferer_widget(inferer_widget)
 
         # # Add widgets to the main layout
@@ -37,6 +39,7 @@ class JaworskiWidget(QWidget):
             data_widget.native,
             pre_process_data_widget.native,
             count_widget.native,
+            region_selection_widget.native,
             inferer_widget,
         ]:
             layout.addWidget(widget)
