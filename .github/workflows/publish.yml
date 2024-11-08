@@ -3,7 +3,7 @@ name: Build and Upload Release Asset
 on:
   push:
     tags:
-      - 'v*.*.*'  # Trigger on version tags like v1.0.0
+      - 'v*.*.*'
 
 jobs:
   build-and-upload:
@@ -16,7 +16,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.9'  # Adjust based on your project's requirements
+          python-version: '3.9'
 
       - name: Install `uv`
         run: |
@@ -40,7 +40,7 @@ jobs:
       - name: Upload Release Asset
         uses: actions/upload-release-asset@v1
         with:
-          name: napari-plugin-dist.zip  # Name of the asset file as it appears in the release
+          name: jawroski-napari-plugin-dist.zip
           release_id: ${{ steps.create_release.outputs.id }}
-          asset_path: dist/*  # Path to the build output
+          asset_path: dist/*  
           asset_content_type: application/zip
