@@ -1,0 +1,46 @@
+name: Build and Upload Release Asset
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'  # Trigger on version tags like v1.0.0
+
+jobs:
+  build-and-upload:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.9'  # Adjust based on your project's requirements
+
+      - name: Install `uv`
+        run: |
+          python -m pip install --upgrade pip
+          pip install astral-sh[uv]  # Install `uv` for building
+
+      - name: Build the package with `uv`
+        run: uv build
+
+      - name: Create GitHub Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref_name }}
+          release_name: Release ${{ github.ref_name }}
+          draft: false
+          prerelease: false
+
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1
+        with:
+          name: napari-plugin-dist.zip  # Name of the asset file as it appears in the release
+          release_id: ${{ steps.create_release.outputs.id }}
+          asset_path: dist/*  # Path to the build output
+          asset_content_type: application/zip
