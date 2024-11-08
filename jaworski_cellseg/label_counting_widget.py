@@ -1,12 +1,12 @@
 from magicgui import magicgui
 import napari
-from skimage.measure import regionprops
+from skimage.measure import regionprops, RegionProperties
 import pandas as pd
-from typing import Optional
+from typing import Optional, Iterable
 from pathlib import Path
 
 
-def calculate_center_pixel(bbox):
+def calculate_center_pixel(bbox: Iterable):
     min_slice, min_row, min_col, max_slice, max_row, max_col = bbox
     return (
         (min_col + max_col) // 2,
@@ -15,12 +15,12 @@ def calculate_center_pixel(bbox):
     )
 
 
-def calculate_volume(region, physical_sizes: dict):
+def calculate_volume(region: RegionProperties, physical_sizes: dict):
     voxel_volume = physical_sizes["x"] * physical_sizes["y"] * physical_sizes["z"]
     return region.area * voxel_volume
 
 
-def extract_region_data(region, physical_sizes: dict):
+def extract_region_data(region: RegionProperties, physical_sizes: dict):
     region_data = {
         "label": region.label,
         "area": region.area,
@@ -36,7 +36,7 @@ def extract_region_data(region, physical_sizes: dict):
     return region_data
 
 
-def generate_statistics(regions: list, physical_sizes: dict, save_file_path: Path):
+def generate_statistics(regions: list[RegionProperties], physical_sizes: dict, save_file_path: Path):
     # Extract data for each region and compile into a DataFrame
     data = [extract_region_data(region, physical_sizes) for region in regions]
     df = pd.DataFrame(data)
@@ -91,8 +91,7 @@ def create_label_counting_widget(viewer: napari.Viewer, physical_sizes: dict):
                     ".csv"
                 )  # Add default ".csv" extension if missing
 
-            with path.open("w") as f:
-                generate_statistics(filtered_labels_regions, physical_sizes, path)
+            generate_statistics(filtered_labels_regions, physical_sizes, path) 
 
         viewer.status = f"Results saved to {file_path}"
 

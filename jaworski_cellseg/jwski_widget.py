@@ -2,11 +2,9 @@ from magicgui import magicgui
 import napari
 from napari_cellseg3d.code_plugins.plugin_model_inference import Inferer
 from qtpy.QtWidgets import QVBoxLayout, QWidget
-import napari
 from .load_data_widget import create_load_data_widget
 from .pre_process_data_widget import create_pre_process_data_widget
 from .label_counting_widget import create_label_counting_widget
-import torch
 
 
 class JaworskiWidget(QWidget):
