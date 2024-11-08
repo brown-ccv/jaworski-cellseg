@@ -2,14 +2,14 @@ version = 1
 requires-python = ">=3.9"
 resolution-markers = [
     "python_full_version < '3.10' and platform_system == 'Windows'",
-    "python_full_version < '3.10' and platform_system != 'Windows'",
     "python_full_version == '3.10.*' and platform_system == 'Windows'",
-    "python_full_version == '3.10.*' and platform_system != 'Windows'",
     "python_full_version == '3.11.*' and platform_system == 'Windows'",
-    "python_full_version == '3.11.*' and platform_system != 'Windows'",
     "python_full_version == '3.12.*' and platform_system == 'Windows'",
-    "python_full_version == '3.12.*' and platform_system != 'Windows'",
     "python_full_version >= '3.13' and platform_system == 'Windows'",
+    "python_full_version < '3.10' and platform_system != 'Windows'",
+    "python_full_version == '3.10.*' and platform_system != 'Windows'",
+    "python_full_version == '3.11.*' and platform_system != 'Windows'",
+    "python_full_version == '3.12.*' and platform_system != 'Windows'",
     "python_full_version >= '3.13' and platform_system != 'Windows'",
 ]
 
@@ -224,6 +224,18 @@ wheels = [
 ]
 
 [[package]]
+name = "bioformats-jar"
+version = "2020.5.27"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "scyjava" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/b5/10/0f7b9521bc51d768130bd405122dcde00f6fe9b51de514fccf32f2e531d2/bioformats_jar-2020.5.27.tar.gz", hash = "sha256:36f9842ea5680f8f645a20195ab57c869db6a0cbe56dfd2729c6fd6bc07bfe29", size = 260905 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/38/e6/a0f790271d7a9c1e83d50536bfe55e900d642b93e6c2f5415e635c927b4b/bioformats_jar-2020.5.27-py3-none-any.whl", hash = "sha256:5c62b996249b8fe7020619aa7f2a64cfb92b985800fba232c91c5ef68888fbcd", size = 10113 },
+]
+
+[[package]]
 name = "bioio"
 version = "1.1.0"
 source = { registry = "https://pypi.org/simple" }
@@ -259,6 +271,24 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/b5/ec/dbc48ae6a1da0c26a81128af146761585154793148ccb201f48e6cf43207/bioio_base-1.0.4.tar.gz", hash = "sha256:92fc4f5676e83103333da1903aa3ccc7825a333229b72bfcd200dd3dfdde360b", size = 34907 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/05/20/86fe57164f3465d7cdd230354e9534dc95bc287a2ceaa6e0deeedb00ad10/bioio_base-1.0.4-py3-none-any.whl", hash = "sha256:187ae976323b15250c978527fe271e1a9707f5712f3517ddeff1e160b2515e53", size = 31548 },
+]
+
+[[package]]
+name = "bioio-bioformats"
+version = "1.0.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "bioformats-jar" },
+    { name = "bioio-base" },
+    { name = "dask", extra = ["array"] },
+    { name = "fsspec" },
+    { name = "numpy" },
+    { name = "ome-types" },
+    { name = "resource-backed-dask-array" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/60/19/c8d42faf8ce5130285fe252a004f19823aba18d83c4d7abbb21507645540/bioio-bioformats-1.0.0.tar.gz", hash = "sha256:5bf92c21cda2f1f7b13c56cd1cb545382611b1c54edf50061d5d0b705d3c50ac", size = 42586 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/93/ce/02518536cfb666c756705fa19da5c18d033b6e8c4097e559b2fa8a9d7389/bioio_bioformats-1.0.0-py3-none-any.whl", hash = "sha256:aced2b7a22a8f7a30f3834fff23df3a6df46be4a3f53b658201e606e20566a22", size = 38301 },
 ]
 
 [[package]]
@@ -645,21 +675,21 @@ wheels = [
 
 [[package]]
 name = "dask"
-version = "2024.8.0"
+version = "2023.5.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "click" },
     { name = "cloudpickle" },
     { name = "fsspec" },
-    { name = "importlib-metadata", marker = "python_full_version < '3.12'" },
+    { name = "importlib-metadata" },
     { name = "packaging" },
     { name = "partd" },
     { name = "pyyaml" },
     { name = "toolz" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/1f/2e/568a422d907745a3a897a732c83d05a3923d8cfa2511a6abea2a0e19994e/dask-2024.8.0.tar.gz", hash = "sha256:f1fec39373d2f101bc045529ad4e9b30e34e6eb33b7aa0fa7073aec7b1bf9eee", size = 9895684 }
+sdist = { url = "https://files.pythonhosted.org/packages/84/51/c8abbf0ea47edcb841e10229b412da3ec4be0a762b02b900c57786c1e640/dask-2023.5.0.tar.gz", hash = "sha256:4f4c28ac406e81b8f21b5be4b31b21308808f3e0e7c7e2f4a914f16476d9941b", size = 8510890 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/db/47/136a5dd68a33089f96f8aa1178ccd545d325ec9ab2bb42a3038711a935c0/dask-2024.8.0-py3-none-any.whl", hash = "sha256:250ea3df30d4a25958290eec4f252850091c6cfaed82d098179c3b25bba18309", size = 1233681 },
+    { url = "https://files.pythonhosted.org/packages/07/93/32d3e317fec6d0fc130284f922ad9bd13d9ae0d52245e6ff6e57647e924c/dask-2023.5.0-py3-none-any.whl", hash = "sha256:32b34986519b7ddc0947c8ca63c2fc81b964e4c208dfb5cbf9f4f8aec92d152b", size = 1173959 },
 ]
 
 [package.optional-dependencies]
@@ -710,7 +740,7 @@ wheels = [
 
 [[package]]
 name = "distributed"
-version = "2024.8.0"
+version = "2023.5.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "click" },
@@ -729,9 +759,9 @@ dependencies = [
     { name = "urllib3" },
     { name = "zict" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/61/09/f3640d43559876a8b9b03204e684ed3be259d04dd017260b002b6cfe8401/distributed-2024.8.0.tar.gz", hash = "sha256:b99caf0a7f257f59477a70a334e081c1241f7cd9860211cc669742e6450e1310", size = 1112136 }
+sdist = { url = "https://files.pythonhosted.org/packages/fa/af/26ae3485c44e6e84230a70b4a1a616f1cec034046815f4b5ee2c8ba72ad3/distributed-2023.5.0.tar.gz", hash = "sha256:74e3f7f68d4dc435a3591ae1ad8ce7d5a11211fd22692e39c7e50aa11bf7e385", size = 1053038 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/95/8a/d828dea3a1b6d7e796bebd8c64dc40d44d9a60762f759a11a61386eb38b5/distributed-2024.8.0-py3-none-any.whl", hash = "sha256:11af55d22dd6e04eb868b87f166b8f59ef1b300f659f87c016643b7f98280ec6", size = 1019423 },
+    { url = "https://files.pythonhosted.org/packages/ab/b6/ef7244c87bb647e805c4b11154c243cf5f2b8f67ec59f4b7053648d58705/distributed-2023.5.0-py3-none-any.whl", hash = "sha256:73ce33bd2460bd45ffc793ffdf9066bd2a3b6bbc65079f74f5147eafcda9b1cb", size = 966566 },
 ]
 
 [[package]]
@@ -1101,7 +1131,7 @@ name = "importlib-metadata"
 version = "8.5.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "zipp", marker = "python_full_version < '3.12'" },
+    { name = "zipp" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/cd/12/33e59336dca5be0c398a7482335911a33aa0e20776128f038019f1a95f1b/importlib_metadata-8.5.0.tar.gz", hash = "sha256:71522656f0abace1d072b9e5481a48f07c138e00f079c38c8f883823f9c26bd7", size = 55304 }
 wheels = [
@@ -1456,29 +1486,39 @@ version = "0.1.0"
 source = { editable = "." }
 dependencies = [
     { name = "bioio" },
-    { name = "black" },
+    { name = "bioio-bioformats" },
     { name = "magicgui" },
     { name = "napari" },
     { name = "napari-cellseg3d" },
     { name = "pyqt5-qt5", version = "5.15.2", source = { registry = "https://pypi.org/simple" }, marker = "platform_system == 'Windows'" },
     { name = "pyqt5-qt5", version = "5.15.15", source = { registry = "https://pypi.org/simple" }, marker = "platform_system != 'Windows'" },
     { name = "scikit-image" },
+    { name = "scyjava" },
     { name = "siphash" },
     { name = "siphash24" },
+    { name = "torch" },
+]
+
+[package.optional-dependencies]
+dev = [
+    { name = "black" },
 ]
 
 [package.metadata]
 requires-dist = [
     { name = "bioio", specifier = ">=1.1.0" },
-    { name = "black", specifier = ">=24.10.0" },
+    { name = "bioio-bioformats", specifier = ">=1.0.0" },
+    { name = "black", marker = "extra == 'dev'", specifier = ">=24.10.0" },
     { name = "magicgui", specifier = ">=0.9.1" },
     { name = "napari", specifier = ">=0.5.4" },
     { name = "napari-cellseg3d", specifier = ">=0.2.0" },
     { name = "pyqt5-qt5", marker = "platform_system != 'Windows'", specifier = "==5.15.15" },
     { name = "pyqt5-qt5", marker = "platform_system == 'Windows'", specifier = "==5.15.2" },
     { name = "scikit-image", specifier = ">=0.22.0" },
+    { name = "scyjava", specifier = ">=1.10.0" },
     { name = "siphash", specifier = ">=0.0.1" },
     { name = "siphash24", specifier = ">=1.7" },
+    { name = "torch", specifier = ">=2.5.1" },
 ]
 
 [[package]]
@@ -1491,6 +1531,18 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/d6/99/99b493cec4bf43176b678de30f81ed003fd6a647a301b9c927280c600f0a/jedi-0.19.1.tar.gz", hash = "sha256:cf0496f3651bc65d7174ac1b7d043eff454892c708a87d1b683e57b569927ffd", size = 1227821 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/20/9f/bc63f0f0737ad7a60800bfd472a4836661adae21f9c2535f3957b1e54ceb/jedi-0.19.1-py2.py3-none-any.whl", hash = "sha256:e983c654fe5c02867aef4cdfce5a2fbb4a50adc0af145f70504238f18ef5e7e0", size = 1569361 },
+]
+
+[[package]]
+name = "jgo"
+version = "1.0.6"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "psutil" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/89/4f/2a9485b9e3d68b343c5b590b19d503f6cc4bebb2fcd827e3467c9d3ab92a/jgo-1.0.6.tar.gz", hash = "sha256:31824d329dc5824954cc150a9d934c543a227818dc1c0ea6ea20741c2e462b24", size = 23284 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/6c/0c/c29fcd6a59f50d953fd296d10fa5d455a239c84fa74ed8db4913f30d13cc/jgo-1.0.6-py3-none-any.whl", hash = "sha256:b59b8da5ab13f84cae2eae295bafa54592204433cef1e3fdede9dae946c0b61d", size = 15355 },
 ]
 
 [[package]]
@@ -1512,6 +1564,33 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/3c/56/3f325b1eef9791759784aa5046a8f6a1aff8f7c898a2e34506771d3b99d8/jmespath-0.10.0.tar.gz", hash = "sha256:b85d0567b8666149a93172712e68920734333c0ce7e89b78b3e987f71e5ed4f9", size = 21607 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/07/cb/5f001272b6faeb23c1c9e0acc04d48eaaf5c862c17709d20e3469c6e0139/jmespath-0.10.0-py2.py3-none-any.whl", hash = "sha256:cdf6525904cc597730141d61b36f2e4b8ecc257c420fa2f4549bac2c2d0cb72f", size = 24489 },
+]
+
+[[package]]
+name = "jpype1"
+version = "1.5.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "packaging" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/25/42/8ca50a0e27e3053829545829e7bcba071cbfa4d5d8fd7fc5d1d988f325b1/JPype1-1.5.0.tar.gz", hash = "sha256:425a6e1966afdd5848b60c2688bcaeb7e40ba504a686f1114589668e0631e878", size = 819110 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/84/9c/80d5edf6d610f82d0658b6402cdf3f8cdd6a7d4f36afb2149da90e0cad47/JPype1-1.5.0-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:7b6b1af3f9e0033080e3532c2686a224cd14706f36c14ef36160a2a1db751a17", size = 587252 },
+    { url = "https://files.pythonhosted.org/packages/01/16/a3559d2b53795c1ece7b59c3c503078f5bab95c6febd75575e447bc22fcb/JPype1-1.5.0-cp310-cp310-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:0ed36803734b812c78ca9228dd3291128ac80b2a1d06c293d60b5c2f049040b4", size = 504044 },
+    { url = "https://files.pythonhosted.org/packages/74/98/d6517002355b0585d0e66f7b0283c7f6e2271c898a886e1ebac09836b100/JPype1-1.5.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:a02b2f05621c119d35f4acc501b4261eeb48a4af7cc13d9afc2e9eb316c4bd29", size = 488604 },
+    { url = "https://files.pythonhosted.org/packages/da/5f/253c1c1dba6f7f457b6c3aa2ea9c517287d49764e0ee1042d5818c36e781/JPype1-1.5.0-cp310-cp310-win_amd64.whl", hash = "sha256:0b40c76e075d4fed2c83340bb30b7b95bbc396fd370c564c6b608faab00ea4ef", size = 351472 },
+    { url = "https://files.pythonhosted.org/packages/98/37/0049866cbfecb879b46d8e9f9b70944624ab17152a282ad5cf60909054ec/JPype1-1.5.0-cp311-cp311-macosx_10_9_universal2.whl", hash = "sha256:85a31b30b482eaf788b21af421e0750aa0be7758307314178143a76632b0ad04", size = 587358 },
+    { url = "https://files.pythonhosted.org/packages/2a/b3/701ce7bfbdf2caa05e128c44e634b61571e5b67109f3a4ff23ce6b72e856/JPype1-1.5.0-cp311-cp311-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:20f0229d7aaa04c480a7fa271cbd161ded58cecd838ba52a4e01bea21b60a058", size = 504143 },
+    { url = "https://files.pythonhosted.org/packages/17/1e/7728ae8fb41e8fbf3a7309f8936d07b0b1622f2860733df0e7ec30b1ce76/JPype1-1.5.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:5ef976e0f3b2e9604469f449f30bb2031941a159a0637f4c16adb2c5076f3e81", size = 488646 },
+    { url = "https://files.pythonhosted.org/packages/1f/19/144f3a767b563ba5c6d4aa534ea1f3fad9a5067c3917df4458a6e1afe0ef/JPype1-1.5.0-cp311-cp311-win_amd64.whl", hash = "sha256:2bc987205ff8d2d8e36dfbef05430e0638e85d4fee1166ba58ebfa6f7a67cdf8", size = 351542 },
+    { url = "https://files.pythonhosted.org/packages/30/0d/9ac6f0e59427fc5ebf4547c2fdbb38e347b46c2dc20b430490236d037ed8/JPype1-1.5.0-cp312-cp312-macosx_10_9_universal2.whl", hash = "sha256:8714bfaf09d6877160bc7ac97812016ccb09f6d7ba5ea2a9f519178aefcca93f", size = 587919 },
+    { url = "https://files.pythonhosted.org/packages/b2/d0/87438127e3d33dee9fb699192ac301065653f2846bff80f58bb2da788946/JPype1-1.5.0-cp312-cp312-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:1696196a8b6ea2f8ad3280249014406de919088494b94a84581da01752d98dca", size = 504871 },
+    { url = "https://files.pythonhosted.org/packages/7d/ed/549766039d17550da6e3fa59ed776a021b400324d7766358d3b6e33d8b28/JPype1-1.5.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:8649b526eccb4047881ad60bdb1974eb71a09cdb7f8bda17c96fdc0f9a3f2d1e", size = 488937 },
+    { url = "https://files.pythonhosted.org/packages/20/47/9606af72e21703e5fca5e29e5bd5e345506977b6ba492c549648adef47ef/JPype1-1.5.0-cp312-cp312-win_amd64.whl", hash = "sha256:9aafc00b00bf8c1b624081e5d4ab87f7752e6c7ee6a141cfc332250b05c6d42f", size = 352208 },
+    { url = "https://files.pythonhosted.org/packages/99/60/2ec2ebdaeb84aaa2ab1055612fa04b4a7fedd2c3ccdbafc78827e294797d/JPype1-1.5.0-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:e8d9bdd137e7cecabebd46ce7d3539fd53745018974d0bc3ec0a3634c2e53af5", size = 381776 },
+    { url = "https://files.pythonhosted.org/packages/13/2f/75eda4afa8570c657a9be020c06101d7e535fdee9a4a1c03c202c95badd6/JPype1-1.5.0-cp39-cp39-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:c9f8f01474186bf69bf05dd9a5ef4d5b2159980cfc9d8da91e021d682cc32552", size = 504114 },
+    { url = "https://files.pythonhosted.org/packages/5d/cf/7b89469bcede4b2fd69c2db7d1d61e8759393cfeec46f7b0c84f5006a691/JPype1-1.5.0-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:f7aa1469d75f9b310f709b61bb2faa4cef4cbd4d670531ad1d1bb53e29cfda05", size = 488516 },
+    { url = "https://files.pythonhosted.org/packages/b9/fd/d38a8e401b089adce04c48021ddcb366891d1932db2f7653054feb470ae6/JPype1-1.5.0-cp39-cp39-win_amd64.whl", hash = "sha256:6bfdc101c56cab0b6b16e974fd8cbb0b3f7f14178286b8b55413c5d82d5f2bea", size = 351644 },
 ]
 
 [[package]]
@@ -3617,6 +3696,19 @@ wheels = [
 ]
 
 [[package]]
+name = "resource-backed-dask-array"
+version = "0.1.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "dask", extra = ["array"] },
+    { name = "typing-extensions" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/62/80/b8952048ae1772d33b95dbf7d7107cf364c037cc229a2690fc8fa9ee8e48/resource_backed_dask_array-0.1.0.tar.gz", hash = "sha256:8fabcccf5c7e29059b5badd6786dd7675a258a203c58babf10077d9c90ada54f", size = 10300 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/0d/b5/852f619e53fa7fb70d8915fcae66632df3958cac7e926c4ac38458958674/resource_backed_dask_array-0.1.0-py2.py3-none-any.whl", hash = "sha256:ec457fa72d81f0340a67ea6557a5a5919323a11cccc978a950df29fa69fe5679", size = 8044 },
+]
+
+[[package]]
 name = "rich"
 version = "13.9.3"
 source = { registry = "https://pypi.org/simple" }
@@ -3838,6 +3930,19 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/35/f5/d0ad1a96f80962ba65e2ce1de6a1e59edecd1f0a7b55990ed208848012e0/scipy-1.13.1-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:637e98dcf185ba7f8e663e122ebf908c4702420477ae52a04f9908707456ba4d", size = 38612244 },
     { url = "https://files.pythonhosted.org/packages/8d/02/1165905f14962174e6569076bcc3315809ae1291ed14de6448cc151eedfd/scipy-1.13.1-cp39-cp39-musllinux_1_1_x86_64.whl", hash = "sha256:a014c2b3697bde71724244f63de2476925596c24285c7a637364761f8710891c", size = 38845637 },
     { url = "https://files.pythonhosted.org/packages/3e/77/dab54fe647a08ee4253963bcd8f9cf17509c8ca64d6335141422fe2e2114/scipy-1.13.1-cp39-cp39-win_amd64.whl", hash = "sha256:392e4ec766654852c25ebad4f64e4e584cf19820b980bc04960bca0b0cd6eaa2", size = 46227440 },
+]
+
+[[package]]
+name = "scyjava"
+version = "1.10.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "jgo" },
+    { name = "jpype1" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/55/6a/2a65fcf6eb48537543a2e0a8465035495702daed999057c48909854a44ce/scyjava-1.10.0.tar.gz", hash = "sha256:7f86e8637e8e79de56d643d978e83253ff38974a43d76579f3792d5e076d5681", size = 47036 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/03/49/a31c78a5b194fe17b041a6a3a2b99cdc664dfe7592159dae9952a7efea7f/scyjava-1.10.0-py3-none-any.whl", hash = "sha256:ee44e8cc9917ea12633b5871e0cb081928f3f241455270e24b1edf3cae1a9e7c", size = 31012 },
 ]
 
 [[package]]

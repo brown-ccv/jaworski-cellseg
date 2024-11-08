@@ -1,1 +1,2 @@
-from .jwski_widget import create_combined_widget
+from importlib.metadata import version
+__version__ = version(__package__ or __name__)
