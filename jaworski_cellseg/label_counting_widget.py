@@ -67,6 +67,8 @@ def create_label_counting_widget(viewer: napari.Viewer, physical_sizes: dict):
             "filter": "*.csv",
         },  # Dynamic choices will be set later
     )
+    ## The number of params in the function MUST match
+    #  the number of params in the @magicgui annotation
     def cell_counting_widget(
         label_layer_name: Optional[str] = None,
         binary_layer_name: Optional[str] = None,
