@@ -84,7 +84,7 @@ def create_label_counting_widget(viewer: napari.Viewer, physical_sizes: dict):
         count = len(filtered_labels_regions)
         cell_counting_widget.total_count.value = str(count)
 
-        viewer.add_labels(result_image, name=f"{count} Filtered Labled layer")
+        viewer.add_labels(result_image, name=f"{count} Filtered Labled layer", opacity=1.0)
 
         file_path = cell_counting_widget.save_results.value
         if file_path:
