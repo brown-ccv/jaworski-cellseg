@@ -19,9 +19,7 @@ def pre_process_bio_data(
     binary_map_threshold,
 ):
     try:
-        print("pre_process_bio_data 1")
         channel_data = napari_viewer.layers["Channel 0"].data
-        print("pre_process_bio_data 2")
         if contrast_adjustment:
             lower_limit = contrast_lower
             upper_limit = contrast_upper
