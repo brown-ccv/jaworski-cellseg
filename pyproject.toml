@@ -6,10 +6,8 @@ readme = "README.md"
 requires-python = ">=3.9"
 dependencies = [
     "bioio>=1.1.0",
-    "napari>=0.5.4",
     "pyqt5-qt5==5.15.2 ; platform_system == 'Windows'",
     "pyqt5-qt5==5.15.15 ; platform_system != 'Windows'",
-    "napari-cellseg3d>=0.2.0",
     "scikit-image>=0.22.0",
     "magicgui>=0.9.1",
     "siphash>=0.0.1",
