@@ -13,7 +13,19 @@ This [Napari](https://napari.org) plugin streamlines the process of segmenting, 
 
 ### Installation
 
-Install [napari](https://napari.org/dev/tutorials/fundamentals/installation.html)  and then install this plugin using the following command
+1. Install [napari](https://napari.org/dev/tutorials/fundamentals/installation.html)  
+
+``` pip install "napari[all]" ```
+
+2. Install [napari cell-seg3d](https://github.com/AdaptiveMotorControlLab/CellSeg3D)
+
+``` pip install napari-cellseg3d ```
+
+3. Install this plugin
+   
+``` pip install git+https://github.com/brown-ccv/jaworski-cellseg.git@v0.1.0 ```
+
+4. (Optional) Install [PyTorch](https://pytorch.org/) and CUDA . Refer to the PyTorch website for instructions on installing the appropriate version that matches the CUDA version in your environment.
 
 
 ### How to use
@@ -106,9 +118,13 @@ The "Label and Count" section will display the number of cells in the dataset.
 
 We use [astral-sh](https://github.com/astral-sh)/[uv](https://github.com/astral-sh/uv) to run and build this project. This tool handles virtual environment creation and dependency installation seamlessly. For detailed setup and installation instructions, please refer to their official documentation.
 
-### Requirements
+### Min Requirements
 - Python >= 3.9
-- (Higly Recommended) PyTorch and CUDA
+-  [Napari](https://napari.org/stable/)
+-  [Napari cell-seg3d](https://github.com/AdaptiveMotorControlLab/CellSeg3D)
+
+### Optional (Highly recommended)
+-  [PyTorch](https://pytorch.org/) and CUDA for rapid segmentation. Refer to the PyTorch website on how to install it with CUDA support
 
 Once `uv` is installed on your system, clone this repository and run the following command to install the plugin:
 
@@ -116,7 +132,7 @@ Once `uv` is installed on your system, clone this repository and run the followi
 uv install
 ```
 
-This command will download and install all required dependencies, including Napari.
+This command will download and install all required dependencies
 
 To start working with the plugin use the command:
 
