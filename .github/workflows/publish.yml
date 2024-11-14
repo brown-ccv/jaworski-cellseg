@@ -38,9 +38,10 @@ jobs:
           prerelease: false
 
       - name: Upload Release Asset
-        uses: actions/upload-release-asset@v1
+        uses: softprops/action-gh-release@v2
         with:
-          name: jawroski-napari-plugin-dist.zip
-          release_id: ${{ steps.create_release.outputs.id }}
-          asset_path: dist/*  
-          asset_content_type: application/zip
+          files: dist/*  # Path to built assets
+          draft: false   # Mark as published (set true if draft is needed)
+          prerelease: false # Mark as prerelease if applicable
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
