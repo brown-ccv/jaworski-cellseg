@@ -19,15 +19,14 @@ Install [napari](https://napari.org/dev/tutorials/fundamentals/installation.html
 ### How to use
 
 1. Run napari from your python environment
-2. Select the Plugin option located at the top menu bar
-3. Select Jaworski lab cell plugin
+2. Select the *Plugins* > *Jaworski lab cell seg*  option from the top menu bar
 
    <img src="images/README/napari_img.png" alt="Image description" width="500" height="300">
 4. After a few seconds the widgets will be added at the right side of the napari window
    
    <img src="images/README/plugin_img.png" alt="Image description" width="200" height="300">
 
-5. The following image illustrates the series of steps to segment, label, and count cells in the dataset.
+5. Load your data and follow the series of steps illustrated in the diagram below to segment, label, and count cells. See below for detailed instructions for each step.
    <img src="images/README/pipeline.png" alt="Image description" width="630" height="200">
 
 ### Load dataset
@@ -55,19 +54,19 @@ This process creates 2 additional layers (Keep track of these):
 
 ### Data Segmentation
 
-For this step we use [napari-CellSeg3D](https://www.napari-hub.org/plugins/napari-cellseg3d) plugin, which is automatically loaded. Please refer to their documentation for guidance on how to use it and achieve optimal segmentation results. By default, this plugin loads the best values for the Jaworski Lab datasets. Feel free to modify these values if necessary. Click the "Start" button and wait for the process to complete (note that it may take considerable time if you are not using a GPU with CUDA support) before proceeding to the next step.
+The [napari-CellSeg3D](https://www.napari-hub.org/plugins/napari-cellseg3d) plugin is used for segmentation and is automatically loaded. Please refer to their documentation for guidance on usage and achieving optimal segmentation results. By default, this plugin loads the best values for the Jaworski Lab datasets. Click the "Start" button and wait for the process to complete. It may take a long time to finish if you are not using a GPU with CUDA support.
 
 <img src="images/README/inference.png" alt="Image description" 
    width="250" height="450">
 
-Keep track of the segmentation result layer, as it highlights all the potential spots in the image that may contain a cell. This is the layer you will use to use in the label and count step.
+Keep track of the segmentation result layer, as it highlights all the potential spots in the image that may contain a cell. This is the layer you will use during the "Label and Count" step.
 
 <img src="images/README/segmentation_results.png" alt="Image description" 
    width="650" height="450">  
 
 ### (Optional)  Select Subregion
 
-It's possible to count cells in sub regions of the dataset. In order to do so, add a shape layer by folowing these steps:
+It's possible to count cells in sub regions of the dataset. In order to do so, add a shape layer with the following steps:
 
 1. In the top-left corner of the Napari viewer, click the “Add Shapes” button (a rectangle icon in the layer controls).
 
@@ -85,7 +84,7 @@ To select regions defined by the shapes, navigate to the "Select Region" tool in
 
 Start by selecting the shape layer containing the subregions you want to analyze and the binary image created during the "Preprocess Dataset" step. Then, click the "Select Region" button. A new layer will be generated, representing the result of the operation.
 
-This new subregion layer is a binary image that will appear in the "Label and Counting" step and can be used to identify cells within those regions.
+This new subregion layer is a binary image that will appear during the "Label and Count" step and can be used to identify cells within those regions.
 
 ### Label and Count
 
@@ -95,7 +94,7 @@ As the final step of our pipeline, multiply the layer of potential cells (see th
 <img src="images/README/label_count_widget.png" alt="Image description" 
    width="280" height="150">  
 
-The first dropdown lists layers containing all potential spots, while the second dropdown displays all available binary images, including subregion binary images. If you'd like to save the results in CSV format, click "Select File" to specify and confirm the file name and save location. Finally, press the "Label and Count" button to complete the process. A new layer with the final results will be added to the viewer.
+The first dropdown lists layers containing all potential spots, while the second dropdown displays all available binary images, including subregion binary images. If you'd like to save the results in CSV format, click "Select File" to specify and confirm the file name and path. Finally, press the "Label and Count" button to complete the process. A new layer with the final results will be added to the viewer.
 
 <img src="images/README/final_labels.png" alt="Image description" 
    width="350" height="310">  
