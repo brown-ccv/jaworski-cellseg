@@ -4,7 +4,7 @@ This [Napari](https://napari.org) plugin streamlines the process of segmenting, 
 
 ## Features
 
-- **Load BioFormat Files**: Load BioFormat Files Easily load .oir files created by lab acquisition hardware (e.g., Imaris), ensuring compatibility and a smooth workflow for researchers.
+- **Load BioFormat Files**: Easily load .oir files created by lab acquisition hardware (e.g., Imaris), ensuring compatibility and a smooth workflow for researchers.
 - **Preprocess Data**: Adjust contrast and apply a Gaussian filter to enhance the dataset, followed by thresholding to create binary masks. This step improves the segmentation and labeling of cells for subsequent analysis.
 - **Count Cells in Dataset**: Count the number of cells present by combining the enhanced dataset with binary maps. The plugin enables users to focus on regions of interest and generate accurate cell counts.
 
@@ -32,7 +32,7 @@ Install [napari](https://napari.org/dev/tutorials/fundamentals/installation.html
 
 ### Load dataset
 
-The top widget includes a button to open a file selection window. Click on "Select File," choose the .oir dataset, and then click the "Open BioImage" button in the widget.
+The top tool includes a button to open a file selection window. Click on "Select File," choose the .oir dataset, and then click the "Open BioImage" button to load the data.
    
    <img src="images/README/load_dataset_widget.png" alt="Image description" 
    width="280" height="160">
@@ -40,7 +40,7 @@ The top widget includes a button to open a file selection window. Click on "Sele
 
 ### Pre Process data
 
-This widget allows you to modify various values to adjust the contrast of the dataset and apply a Gaussian filter. By default, we have set values that work best for the Jaworski lab datasets. You don’t need to modify these values, but feel free to adjust them if needed. Once ready, press the "Pre-process BioImage" button, and additional layers will be added to the visualizer.
+You may pre-process the image with a Gaussian filter and contrast adjustments. Default values are set to optimal values for the Jaworski lab datasets. Once values are to your preference, click "Pre-process BioImage" and additional layers will be added to the visualizer
 
  <img src="images/README/preprocess_widget.png" alt="Image description" 
    width="280" height="160">
@@ -78,7 +78,7 @@ It's possible to count cells in sub regions of the dataset. In order to do so, a
 <img src="images/README/shapes_layer.png" alt="Image description" 
    width="480" height="290">  
 
-To select the regions defined by the shapes, navigate to the "Select Region" widget in the plugin. The first dropdown menu will list the available shape layers, while the second dropdown menu will show the cloud binary images. This process subtracts the binary image from the shape layer to isolate the desired regions.
+To select regions defined by the shapes, navigate to the "Select Region" tool in the plugin. The first dropdown menu lists the available shape layers, while the second dropdown menu displays the cloud binary images. This process uses the shape layer to isolate and subtract specific regions from the binary image.
 
 <img src="images/README/subregion_widget.png" alt="Image description" 
    width="315" height="150">  
@@ -89,7 +89,7 @@ This new subregion layer is a binary image that will appear in the "Label and Co
 
 ### Label and Count
 
-As the final step of our pipeline, we can multiply the layer of potential cells (refer to the "Preprocess Data" step) by the binary map representing the regions where cells are likely to be located. This can be achieved using the "Label and Count" widget.
+As the final step of our pipeline, multiply the layer of potential cells (see the "Preprocess Data" step) by the binary map that highlights regions likely containing cells. This can be accomplished using the "Label and Count" tool.
 
 
 <img src="images/README/label_count_widget.png" alt="Image description" 
@@ -100,7 +100,7 @@ The first dropdown lists layers containing all potential spots, while the second
 <img src="images/README/final_labels.png" alt="Image description" 
    width="350" height="310">  
 
-The "Label and Count" widget will display the number of cells in the dataset.
+The "Label and Count" section will display the number of cells in the dataset.
 
 ## For developers
 
