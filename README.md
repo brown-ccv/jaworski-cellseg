@@ -1,4 +1,4 @@
-# Jaworsi-Lab Napari Plugin
+# Jaworski-Lab Napari Plugin
 
 This [Napari](https://napari.org) plugin streamlines the process of segmenting, analyzing, and counting cells in 3D datasets. Designed with researchers in mind, it provides an intuitive interface to handle bioimaging data, offering seamless integration with the Jaworski Lab datasets and their acquisition hardware.
 
