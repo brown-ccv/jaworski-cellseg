@@ -9,32 +9,14 @@ This [Napari](https://napari.org) plugin streamlines the process of segmenting, 
 - **Count Cells in Dataset**: Count the number of cells present by combining the enhanced dataset with binary maps. The plugin enables users to focus on regions of interest and generate accurate cell counts.
 
 
-## Installation
+## User's manual
 
-#### For developers
-
-We use [astral-sh](https://github.com/astral-sh)/[uv](https://github.com/astral-sh/uv) to run and build this project. This tool handles virtual environment creation and dependency installation seamlessly. For detailed setup and installation instructions, please refer to their official documentation.
-
-Once `uv` is installed on your system, clone this repository and run the following command to install the plugin:
-
-```
-uv install
-```
-
-This command will download and install all required dependencies, including Napari.
-
-To start working with the plugin use the command:
-
-```
-uv run napari
-```
-
-#### For users
+### Installation
 
 Install [napari](https://napari.org/dev/tutorials/fundamentals/installation.html)  and then install this plugin using the following command
 
 
-## How to use
+### How to use
 
 1. Run napari from your python environment
 2. Select the Plugin option located at the top menu bar
@@ -42,6 +24,7 @@ Install [napari](https://napari.org/dev/tutorials/fundamentals/installation.html
 
    <img src="images/README/napari_img.png" alt="Image description" width="500" height="300">
 4. After a few seconds the widgets will be added at the right side of the napari window
+   
    <img src="images/README/plugin_img.png" alt="Image description" width="200" height="300">
 
 5. The following image illustrates the series of steps to segment, label, and count cells in the dataset.
@@ -118,3 +101,25 @@ The first dropdown lists layers containing all potential spots, while the second
    width="350" height="310">  
 
 The "Label and Count" widget will display the number of cells in the dataset.
+
+## For developers
+
+We use [astral-sh](https://github.com/astral-sh)/[uv](https://github.com/astral-sh/uv) to run and build this project. This tool handles virtual environment creation and dependency installation seamlessly. For detailed setup and installation instructions, please refer to their official documentation.
+
+### Requirements
+- Python >= 3.9
+- (Higly Recommended) PyTorch and CUDA
+
+Once `uv` is installed on your system, clone this repository and run the following command to install the plugin:
+
+```
+uv install
+```
+
+This command will download and install all required dependencies, including Napari.
+
+To start working with the plugin use the command:
+
+```
+uv run napari
+```
