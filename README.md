@@ -51,7 +51,7 @@ The top tool includes a button to open a file selection window. Click on "Select
 
 ### Pre Process data
 
-You may pre-process the image with a Gaussian filter and contrast adjustments. Default values are set to optimal values for the Jaworski lab datasets. Once values are to your preference, click "Pre-process BioImage" and additional layers will be added to the visualizer
+You may pre-process the image with a Gaussian filter and contrast adjustments. Default values are set to optimal values for the Jaworski lab datasets. Once values are to your preference, click "Pre-process BioImage" and additional layers will be added to the visualizer.
 
  <img src="images/README/preprocess_widget.png" alt="Image description" 
    width="280" height="160">
@@ -100,7 +100,7 @@ This new subregion layer is a binary image that will appear during the "Label an
 
 ### Label and Count
 
-As the final step of our pipeline, multiply the layer of potential cells (see the "Preprocess Data" step) by the binary map that highlights regions likely containing cells. This can be accomplished using the "Label and Count" tool.
+The final step of the pipeline multiplies the layer of potential cells (see the "Preprocess Data" step) by the binary map that highlights regions likely containing cells. This can be accomplished using the "Label and Count" tool.
 
 
 <img src="images/README/label_count_widget.png" alt="Image description" 
