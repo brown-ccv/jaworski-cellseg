@@ -6,6 +6,7 @@ from .load_data_widget import create_load_data_widget
 from .pre_process_data_widget import create_pre_process_data_widget
 from .label_counting_widget import create_label_counting_widget
 from .subregion_selection_widget import create_region_selection_widget
+import yaml
 
 
 class JaworskiWidget(QWidget):
@@ -19,6 +20,9 @@ class JaworskiWidget(QWidget):
         super().__init__(parent)
         self.viewer = napari_viewer
         self.physical_sizes = {"x": 0.0, "y": 0.0, "z": 0.0}
+        # Read the configuration file
+        with open("config.yaml", "r") as f:
+            self.config = yaml.safe_load(f)
         self.init_ui()
 
     def init_ui(self):
@@ -28,7 +32,7 @@ class JaworskiWidget(QWidget):
         # Create each widget, passing the viewer to each
         data_widget = create_load_data_widget(self.viewer, self.physical_sizes)
         pre_process_data_widget = create_pre_process_data_widget(
-            self.viewer, inferer_widget
+            self.viewer, inferer_widget, self.config
         )
         count_widget = create_label_counting_widget(self.viewer, self.physical_sizes)
         region_selection_widget = create_region_selection_widget(self.viewer)
@@ -50,16 +54,39 @@ class JaworskiWidget(QWidget):
         """
         # Model selection and inference settings
         inferer_widget.model_choice.setCurrentIndex(1)  # Select SwinUNetR
-        inferer_widget.use_window_choice.setChecked(True)
-        inferer_widget.model_input_size.setValue(96)
-        inferer_widget.window_overlap_slider.setValue(50)
-        inferer_widget.thresholding_checkbox.setChecked(True)
+        inferer_widget.use_window_choice.setChecked(
+            self.config["settings"]["inference_use_window_choice"]
+        )
+        inferer_widget.model_input_size.setValue(
+            self.config["settings"]["inference_input"]
+        )
+        inferer_widget.window_overlap_slider.setValue(
+            self.config["settings"]["inference_overlap"]
+        )
+        inferer_widget.thresholding_checkbox.setChecked(
+            self.config["settings"]["inference_perform_threhold"]
+        )
 
         # Set probability threshold (0.6) and instance segmentation settings
-        inferer_widget.thresholding_slider.setValue(60)
-        inferer_widget.use_instance_choice.setChecked(True)
+        inferer_widget.thresholding_slider.setValue(
+            self.config["settings"]["inference_perform_threhold_value"]
+        )
+        inferer_widget.use_instance_choice.setChecked(
+            self.config["settings"]["inference_instance_segmentation"]
+        )
 
         # Configure instance segmentation with Voronoi-Otsu method parameters
-        voronoi_widget = inferer_widget.instance_widgets.methods["Voronoi-Otsu"]
-        voronoi_widget.counters[0].setValue(2.5)
-        voronoi_widget.counters[2].setValue(25.00)
+        voronoi_widget = inferer_widget.instance_widgets.methods[
+            self.config["settings"]["inference_instance_segmentation_option"]
+        ]
+        voronoi_widget.counters[0].setValue(
+            self.config["settings"]["inference_instance_segmentation_spot_signma"]
+        )
+        voronoi_widget.counters[1].setValue(
+            self.config["settings"]["inference_instance_segmentation_outline_signma"]
+        )
+        voronoi_widget.counters[2].setValue(
+            self.config["settings"][
+                "inference_instance_segmentation_small_object_removal"
+            ]
+        )
