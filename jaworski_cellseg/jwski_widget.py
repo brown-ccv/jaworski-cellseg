@@ -33,25 +33,25 @@ class JaworskiWidget(QWidget):
     def init_ui(self):
         # Create the main widget to hold both widgets
         layout = QVBoxLayout(self)
-        inferer_widget = Inferer(self.viewer)
+        self.inferer_widget = Inferer(self.viewer)
         # Create each widget, passing the viewer to each
-        config_widget = create_configuration_widget(self.config_files)
-        data_widget = create_load_data_widget(self.viewer, self.physical_sizes)
-        pre_process_data_widget = create_pre_process_data_widget(
-            self.viewer, inferer_widget, self.config
+        self.config_widget = create_configuration_widget(self.config_files)
+        self.data_widget = create_load_data_widget(self.viewer, self.physical_sizes)
+        self.pre_process_data_widget = create_pre_process_data_widget(
+            self.viewer, self.inferer_widget, self.config
         )
-        count_widget = create_label_counting_widget(self.viewer, self.physical_sizes)
-        region_selection_widget = create_region_selection_widget(self.viewer)
-        self.configure_inferer_widget(inferer_widget)
+        self.count_widget = create_label_counting_widget(self.viewer, self.physical_sizes)
+        self.region_selection_widget = create_region_selection_widget(self.viewer)
+        self.configure_inferer_widget(self.inferer_widget)
 
         # # Add widgets to the main layout
         for widget in [
-            config_widget.native,
-            data_widget.native,
-            pre_process_data_widget.native,
-            count_widget.native,
-            region_selection_widget.native,
-            inferer_widget,
+            self.config_widget.native,
+            self.data_widget.native,
+            self.pre_process_data_widget.native,
+            self.count_widget.native,
+            self.region_selection_widget.native,
+            self.inferer_widget,
         ]:
             layout.addWidget(widget)
 
