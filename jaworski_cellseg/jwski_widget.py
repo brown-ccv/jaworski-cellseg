@@ -6,8 +6,9 @@ from .load_data_widget import create_load_data_widget
 from .pre_process_data_widget import create_pre_process_data_widget
 from .label_counting_widget import create_label_counting_widget
 from .subregion_selection_widget import create_region_selection_widget
+from .configuration_widget import create_configuration_widget
 import yaml
-
+from pathlib import Path
 
 class JaworskiWidget(QWidget):
     """
@@ -21,7 +22,11 @@ class JaworskiWidget(QWidget):
         self.viewer = napari_viewer
         self.physical_sizes = {"x": 0.0, "y": 0.0, "z": 0.0}
         # Read the configuration file
-        with open("config.yaml", "r") as f:
+        self.config_directory = Path(__file__).parent / "config"
+        config_default_file_path = self.config_directory  / "default.yaml"
+        self.config_files = [f.stem for f in self.config_directory.rglob("*") if f.is_file()]
+        
+        with open(config_default_file_path, "r") as f:
             self.config = yaml.safe_load(f)
         self.init_ui()
 
@@ -30,6 +35,7 @@ class JaworskiWidget(QWidget):
         layout = QVBoxLayout(self)
         inferer_widget = Inferer(self.viewer)
         # Create each widget, passing the viewer to each
+        config_widget = create_configuration_widget(self.config_files)
         data_widget = create_load_data_widget(self.viewer, self.physical_sizes)
         pre_process_data_widget = create_pre_process_data_widget(
             self.viewer, inferer_widget, self.config
@@ -40,6 +46,7 @@ class JaworskiWidget(QWidget):
 
         # # Add widgets to the main layout
         for widget in [
+            config_widget.native,
             data_widget.native,
             pre_process_data_widget.native,
             count_widget.native,
