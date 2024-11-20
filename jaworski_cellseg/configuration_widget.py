@@ -48,6 +48,10 @@ def create_configuration_widget(configurations: list[str],
                 data["inference_instance_segmentation_small_object_removal"] = voronoi_widget.counters[2].value()
                 jaworski_obj.config['settings'][configuration_widget.save_confg.value] = data
                 yaml.dump(jaworski_obj.config, file)
+                ## Add configuration to the dropdown list
+                configuration_widget.configuration_names.choices = (
+                    list(configuration_widget.configuration_names.choices)
+                      + [configuration_widget.save_confg.value])
     
     def update_layer_dropdown(event, jaworski_obj):
         print(f"Load configuration: {event} ")
@@ -69,11 +73,6 @@ def create_configuration_widget(configurations: list[str],
         voronoi_widget.counters[0].setValue(configuration["inference_instance_segmentation_spot_signma"])
         voronoi_widget.counters[1].setValue(configuration["inference_instance_segmentation_outline_signma"])
         voronoi_widget.counters[2].setValue(configuration["inference_instance_segmentation_small_object_removal"])
-
-
-
-
-
 
 
     configuration_widget.configuration_names.changed.connect(
