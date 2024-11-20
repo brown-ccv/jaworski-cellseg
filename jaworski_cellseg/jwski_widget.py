@@ -22,12 +22,11 @@ class JaworskiWidget(QWidget):
         self.viewer = napari_viewer
         self.physical_sizes = {"x": 0.0, "y": 0.0, "z": 0.0}
         # Read the configuration file
-        self.config_directory = Path(__file__).parent / "config"
-        config_default_file_path = self.config_directory  / "default.yaml"
-        self.config_files = [f.stem for f in self.config_directory.rglob("*") if f.is_file()]
-        
-        with open(config_default_file_path, "r") as f:
+        self.config_file_path = Path(__file__).parent / "config"  / "config.yaml"
+        with open(self.config_file_path, "r") as f:
             self.config = yaml.safe_load(f)
+            self.configurations = list(self.config.get('settings', {}).keys())
+            self.current_config = self.config['settings'].get('default', {})
         self.init_ui()
 
     def init_ui(self):
@@ -35,10 +34,14 @@ class JaworskiWidget(QWidget):
         layout = QVBoxLayout(self)
         self.inferer_widget = Inferer(self.viewer)
         # Create each widget, passing the viewer to each
-        self.config_widget = create_configuration_widget(self.config_files)
+        default_index = self.configurations.index("default")
+        self.config_widget = create_configuration_widget(self.configurations,
+                                                         default_index,
+                                                         self.config_file_path,
+                                                         self)
         self.data_widget = create_load_data_widget(self.viewer, self.physical_sizes)
         self.pre_process_data_widget = create_pre_process_data_widget(
-            self.viewer, self.inferer_widget, self.config
+            self.viewer, self.inferer_widget, self.current_config
         )
         self.count_widget = create_label_counting_widget(self.viewer, self.physical_sizes)
         self.region_selection_widget = create_region_selection_widget(self.viewer)
@@ -59,41 +62,47 @@ class JaworskiWidget(QWidget):
         """
         Configure default settings for the inference widget.
         """
+        # Get configuration
+
         # Model selection and inference settings
         inferer_widget.model_choice.setCurrentIndex(1)  # Select SwinUNetR
         inferer_widget.use_window_choice.setChecked(
-            self.config["settings"]["inference_use_window_choice"]
+            self.current_config["inference_use_window_choice"]
         )
+        inferer_widget.window_size_choice.setCurrentIndex(
+            inferer_widget.window_size_choice.findText(
+                str(self.current_config["inference_window_size"])))
+        
         inferer_widget.model_input_size.setValue(
-            self.config["settings"]["inference_input"]
+           self.current_config["inference_input"]
         )
         inferer_widget.window_overlap_slider.setValue(
-            self.config["settings"]["inference_overlap"]
+            self.current_config["inference_overlap"]
         )
         inferer_widget.thresholding_checkbox.setChecked(
-            self.config["settings"]["inference_perform_threhold"]
+            self.current_config["inference_perform_threhold"]
         )
 
         # Set probability threshold (0.6) and instance segmentation settings
         inferer_widget.thresholding_slider.setValue(
-            self.config["settings"]["inference_perform_threhold_value"]
+            self.current_config["inference_perform_threhold_value"]
         )
         inferer_widget.use_instance_choice.setChecked(
-            self.config["settings"]["inference_instance_segmentation"]
+            self.current_config["inference_instance_segmentation"]
         )
 
         # Configure instance segmentation with Voronoi-Otsu method parameters
         voronoi_widget = inferer_widget.instance_widgets.methods[
-            self.config["settings"]["inference_instance_segmentation_option"]
+            self.current_config["inference_instance_segmentation_option"]
         ]
         voronoi_widget.counters[0].setValue(
-            self.config["settings"]["inference_instance_segmentation_spot_signma"]
+            self.current_config["inference_instance_segmentation_spot_signma"]
         )
         voronoi_widget.counters[1].setValue(
-            self.config["settings"]["inference_instance_segmentation_outline_signma"]
+            self.current_config["inference_instance_segmentation_outline_signma"]
         )
         voronoi_widget.counters[2].setValue(
-            self.config["settings"][
+            self.current_config[
                 "inference_instance_segmentation_small_object_removal"
             ]
         )
