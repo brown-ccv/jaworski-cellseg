@@ -1,6 +1,6 @@
 settings:
   default:
-    binary_threshold: 90.0
+    binary_map_threshold: 90.0
     contrast_adjustment: true
     contrast_max: 95.0
     contrast_min: 5.0

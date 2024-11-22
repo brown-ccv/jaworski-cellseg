@@ -25,8 +25,9 @@ class JaworskiWidget(QWidget):
         self.config_file_path = Path(__file__).parent / "config"  / "config.yaml"
         with open(self.config_file_path, "r") as f:
             self.config = yaml.safe_load(f)
-            self.configurations = list(self.config.get('settings', {}).keys())
-            self.current_config = self.config['settings'].get('default', {})
+            settings = self.config.get('settings', {})
+            self.configurations = list(settings)
+            self.current_config = settings.get('default', {})
         self.init_ui()
 
     def init_ui(self):

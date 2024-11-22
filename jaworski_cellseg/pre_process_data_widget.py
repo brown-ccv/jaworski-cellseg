@@ -69,7 +69,7 @@ def create_pre_process_data_widget(
         contrast_adjustment: bool = config["contrast_adjustment"],
         contrast_lower: float = config["contrast_min"],
         contrast_upper: float = config["contrast_max"],
-        binary_map_threshold: float = config["binary_threshold"],
+        binary_map_threshold: float = config["binary_map_threshold"],
     ) -> "napari.types.LabelsData":
 
         result_image, binary_mask = pre_process_bio_data(
