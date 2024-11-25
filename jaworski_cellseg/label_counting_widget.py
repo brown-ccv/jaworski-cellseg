@@ -32,7 +32,9 @@ def extract_region_data(region: "RegionProperties", physical_sizes: dict):
     region_data["center_x"], region_data["center_y"], region_data["center_z"] = (
         calculate_center_pixel(region.bbox)
     )
-    region_data["volume"] = calculate_volume(region, physical_sizes)
+
+    volume_key = f"volume_{physical_sizes['unit']}"
+    region_data[volume_key] = calculate_volume(region, physical_sizes)
     return region_data
 
 

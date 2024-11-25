@@ -18,7 +18,7 @@ class JaworskiWidget(QWidget):
     def __init__(self, napari_viewer: napari.viewer.Viewer, parent=None):
         super().__init__(parent)
         self.viewer = napari_viewer
-        self.physical_sizes = {"x": 0.0, "y": 0.0, "z": 0.0}
+        self.physical_sizes = {"x": 0.0, "y": 0.0, "z": 0.0, "unit": None}
         self.init_ui()
 
     def init_ui(self):
