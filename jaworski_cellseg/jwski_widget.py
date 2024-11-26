@@ -108,12 +108,12 @@ class JaworskiWidget(QWidget):
         voronoi_widget = inferer_widget.instance_widgets.methods[
             self.current_config["inference_instance_segmentation_option"]
         ]
-        voronoi_widget.counters[0].setValue(
-            self.current_config["inference_instance_segmentation_spot_signma"]
-        )
-        voronoi_widget.counters[1].setValue(
-            self.current_config["inference_instance_segmentation_outline_signma"]
-        )
-        voronoi_widget.counters[2].setValue(
-            self.current_config["inference_instance_segmentation_small_object_removal"]
-        )
+        
+        config_keys = [
+            "inference_instance_segmentation_spot_signma",
+            "inference_instance_segmentation_outline_signma",
+            "inference_instance_segmentation_small_object_removal"
+        ]
+        
+        for i, key in enumerate(config_keys):
+            voronoi_widget.counters[i].setValue(self.current_config[key])
