@@ -1,7 +1,7 @@
 from magicgui import magicgui
 import napari
 from napari_cellseg3d.code_plugins.plugin_model_inference import Inferer
-from qtpy.QtWidgets import QVBoxLayout, QWidget
+from qtpy.QtWidgets import QVBoxLayout, QWidget, QScrollArea
 from .load_data_widget import create_load_data_widget
 from .pre_process_data_widget import create_pre_process_data_widget
 from .label_counting_widget import create_label_counting_widget
@@ -50,7 +50,8 @@ class JaworskiWidget(QWidget):
         self.region_selection_widget = create_region_selection_widget(self.viewer)
         self.configure_inferer_widget(self.inferer_widget)
 
-        # Add widgets to the main layout
+        content_layout = QVBoxLayout()
+
         widget_attributes = [
             "config_widget",
             "data_widget",
@@ -67,9 +68,20 @@ class JaworskiWidget(QWidget):
                     if hasattr(getattr(self, attr), "native")
                     else getattr(self, attr)
                 )
-                layout.addWidget(widget)
+                content_layout.addWidget(widget)
             except AttributeError as e:
                 print(f"Attribute '{attr}' not found: {e}")
+
+        # Wrap content_layout in a QWidget
+        content_widget = QWidget()
+        content_widget.setLayout(content_layout)
+
+        # Add content_widget to the scroll area
+        scroll_area = QScrollArea()
+        scroll_area.setWidget(content_widget)
+        scroll_area.setWidgetResizable(True)
+
+        layout.addWidget(scroll_area)
 
     def configure_inferer_widget(self, inferer_widget):
         """
@@ -108,12 +120,12 @@ class JaworskiWidget(QWidget):
         voronoi_widget = inferer_widget.instance_widgets.methods[
             self.current_config["inference_instance_segmentation_option"]
         ]
-        
+
         config_keys = [
             "inference_instance_segmentation_spot_signma",
             "inference_instance_segmentation_outline_signma",
-            "inference_instance_segmentation_small_object_removal"
+            "inference_instance_segmentation_small_object_removal",
         ]
-        
+
         for i, key in enumerate(config_keys):
             voronoi_widget.counters[i].setValue(self.current_config[key])
