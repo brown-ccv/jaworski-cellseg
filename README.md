@@ -11,7 +11,17 @@ This [Napari](https://napari.org) plugin streamlines the process of segmenting, 
 
 ## User's manual
 
-### Installation
+To load BioFormat images (e.g., `.oir`, `.nd2`), **Java** and **Maven** are required. Please ensure the following:
+
+**Install Java**:  
+   - Download and install [Java](https://www.oracle.com/java/technologies/javase/jdk22-archive-downloads.html).
+   - Set the `JAVA_HOME` environmental variable to point to your Java installation directory.
+
+**Install Maven**:  
+   - Download and install [Maven](https://maven.apache.org/download.cgi).
+   - Add the Maven installation directory to the `PATH` environmental variable.
+
+Once both tools are properly configured, you will be ready to work with BioFormat images.
 
 1. Install [napari](https://napari.org/dev/tutorials/fundamentals/installation.html)  
 

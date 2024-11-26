@@ -50,7 +50,9 @@ def pre_process_bio_data(
         print(e)
 
 
-def create_pre_process_data_widget(viewer: napari.Viewer, inferer_widget: Inferer):
+def create_pre_process_data_widget(
+    viewer: napari.Viewer, inferer_widget: Inferer, config: dict
+):
     @magicgui(
         call_button="Pre process BioImage",
         auto_call=False,
@@ -62,12 +64,12 @@ def create_pre_process_data_widget(viewer: napari.Viewer, inferer_widget: Infere
         binary_map_threshold={"label": "Binary Threshold", "min": 0.0, "max": 100.0},
     )
     def pre_process_data_widget(
-        gaussian_checkbox: bool = True,
-        gaussian_factor: float = 1.0,
-        contrast_adjustment: bool = True,
-        contrast_lower: float = 5.0,
-        contrast_upper: float = 95.0,
-        binary_map_threshold: float = 90.0,
+        gaussian_checkbox: bool = config.get("gausianFilter", True),
+        gaussian_factor: float = config.get("gaussian_sigma", 1.0),
+        contrast_adjustment: bool = config.get("contrast_adjustment", True),
+        contrast_lower: float = config.get("contrast_min", 5.0),
+        contrast_upper: float = config.get("contrast_max", 95.0),
+        binary_map_threshold: float = config.get("binary_map_threshold", 90.0),
     ) -> "napari.types.LabelsData":
 
         result_image, binary_mask = pre_process_bio_data(

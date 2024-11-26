@@ -6,6 +6,9 @@ from .load_data_widget import create_load_data_widget
 from .pre_process_data_widget import create_pre_process_data_widget
 from .label_counting_widget import create_label_counting_widget
 from .subregion_selection_widget import create_region_selection_widget
+from .configuration_widget import create_configuration_widget
+import yaml
+from pathlib import Path
 
 
 class JaworskiWidget(QWidget):
@@ -19,47 +22,98 @@ class JaworskiWidget(QWidget):
         super().__init__(parent)
         self.viewer = napari_viewer
         self.physical_sizes = {"x": 0.0, "y": 0.0, "z": 0.0, "unit": None}
+        # Read the configuration file
+        self.config_file_path = Path(__file__).parent / "config" / "config.yaml"
+        with open(self.config_file_path, "r") as f:
+            self.config = yaml.safe_load(f)
+            settings = self.config.get("settings", {})
+            self.configurations = list(settings)
+            self.current_config = settings.get("default", {})
         self.init_ui()
 
     def init_ui(self):
         # Create the main widget to hold both widgets
         layout = QVBoxLayout(self)
-        inferer_widget = Inferer(self.viewer)
+        self.inferer_widget = Inferer(self.viewer)
         # Create each widget, passing the viewer to each
-        data_widget = create_load_data_widget(self.viewer, self.physical_sizes)
-        pre_process_data_widget = create_pre_process_data_widget(
-            self.viewer, inferer_widget
+        default_index = self.configurations.index("default")
+        self.config_widget = create_configuration_widget(
+            self.configurations, default_index, self.config_file_path, self
         )
-        count_widget = create_label_counting_widget(self.viewer, self.physical_sizes)
-        region_selection_widget = create_region_selection_widget(self.viewer)
-        self.configure_inferer_widget(inferer_widget)
+        self.data_widget = create_load_data_widget(self.viewer, self.physical_sizes)
+        self.pre_process_data_widget = create_pre_process_data_widget(
+            self.viewer, self.inferer_widget, self.current_config
+        )
+        self.count_widget = create_label_counting_widget(
+            self.viewer, self.physical_sizes
+        )
+        self.region_selection_widget = create_region_selection_widget(self.viewer)
+        self.configure_inferer_widget(self.inferer_widget)
 
-        # # Add widgets to the main layout
-        for widget in [
-            data_widget.native,
-            pre_process_data_widget.native,
-            count_widget.native,
-            region_selection_widget.native,
-            inferer_widget,
-        ]:
-            layout.addWidget(widget)
+        # Add widgets to the main layout
+        widget_attributes = [
+            "config_widget",
+            "data_widget",
+            "pre_process_data_widget",
+            "count_widget",
+            "region_selection_widget",
+            "inferer_widget",
+        ]
+
+        for attr in widget_attributes:
+            try:
+                widget = (
+                    getattr(self, attr).native
+                    if hasattr(getattr(self, attr), "native")
+                    else getattr(self, attr)
+                )
+                layout.addWidget(widget)
+            except AttributeError as e:
+                print(f"Attribute '{attr}' not found: {e}")
 
     def configure_inferer_widget(self, inferer_widget):
         """
         Configure default settings for the inference widget.
         """
+        # Get configuration
+
         # Model selection and inference settings
         inferer_widget.model_choice.setCurrentIndex(1)  # Select SwinUNetR
-        inferer_widget.use_window_choice.setChecked(True)
-        inferer_widget.model_input_size.setValue(96)
-        inferer_widget.window_overlap_slider.setValue(50)
-        inferer_widget.thresholding_checkbox.setChecked(True)
+        inferer_widget.use_window_choice.setChecked(
+            self.current_config["inference_use_window_choice"]
+        )
+        inferer_widget.window_size_choice.setCurrentIndex(
+            inferer_widget.window_size_choice.findText(
+                str(self.current_config["inference_window_size"])
+            )
+        )
+
+        inferer_widget.model_input_size.setValue(self.current_config["inference_input"])
+        inferer_widget.window_overlap_slider.setValue(
+            self.current_config["inference_overlap"]
+        )
+        inferer_widget.thresholding_checkbox.setChecked(
+            self.current_config["inference_perform_threhold"]
+        )
 
         # Set probability threshold (0.6) and instance segmentation settings
-        inferer_widget.thresholding_slider.setValue(60)
-        inferer_widget.use_instance_choice.setChecked(True)
+        inferer_widget.thresholding_slider.setValue(
+            self.current_config["inference_perform_threhold_value"]
+        )
+        inferer_widget.use_instance_choice.setChecked(
+            self.current_config["inference_instance_segmentation"]
+        )
 
         # Configure instance segmentation with Voronoi-Otsu method parameters
-        voronoi_widget = inferer_widget.instance_widgets.methods["Voronoi-Otsu"]
-        voronoi_widget.counters[0].setValue(2.5)
-        voronoi_widget.counters[2].setValue(25.00)
+        voronoi_widget = inferer_widget.instance_widgets.methods[
+            self.current_config["inference_instance_segmentation_option"]
+        ]
+        
+        config_keys = [
+            "inference_instance_segmentation_spot_signma",
+            "inference_instance_segmentation_outline_signma",
+            "inference_instance_segmentation_small_object_removal"
+        ]
+        
+        for i, key in enumerate(config_keys):
+            voronoi_widget.counters[i].setValue(self.current_config[key])
