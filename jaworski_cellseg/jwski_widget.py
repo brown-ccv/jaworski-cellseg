@@ -21,7 +21,7 @@ class JaworskiWidget(QWidget):
     def __init__(self, napari_viewer: napari.viewer.Viewer, parent=None):
         super().__init__(parent)
         self.viewer = napari_viewer
-        self.physical_sizes = {"x": 0.0, "y": 0.0, "z": 0.0}
+        self.physical_sizes = {"x": 0.0, "y": 0.0, "z": 0.0, "unit": None}
         # Read the configuration file
         self.config_file_path = Path(__file__).parent / "config" / "config.yaml"
         with open(self.config_file_path, "r") as f:
