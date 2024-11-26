@@ -64,12 +64,12 @@ def create_pre_process_data_widget(
         binary_map_threshold={"label": "Binary Threshold", "min": 0.0, "max": 100.0},
     )
     def pre_process_data_widget(
-        gaussian_checkbox: bool = config["gausianFilter"],
-        gaussian_factor: float = config["gaussian_sigma"],
-        contrast_adjustment: bool = config["contrast_adjustment"],
-        contrast_lower: float = config["contrast_min"],
-        contrast_upper: float = config["contrast_max"],
-        binary_map_threshold: float = config["binary_map_threshold"],
+        gaussian_checkbox: bool = config.get("gausianFilter", True),
+        gaussian_factor: float = config.get("gaussian_sigma", 1.0),
+        contrast_adjustment: bool = config.get("contrast_adjustment", True),
+        contrast_lower: float = config.get("contrast_min", 5.0),
+        contrast_upper: float = config.get("contrast_max", 95.0),
+        binary_map_threshold: float = config.get("binary_map_threshold", 90.0),
     ) -> "napari.types.LabelsData":
 
         result_image, binary_mask = pre_process_bio_data(

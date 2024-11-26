@@ -17,8 +17,3 @@ settings:
     inference_perform_threhold_value: 60
     inference_use_window_choice: true
     inference_window_size: 64
-  hanna:
-    contrast_adjustment: true
-    contrast_min: 5.0
-    gausianFilter: true
-    gaussian_sigma: 1.0

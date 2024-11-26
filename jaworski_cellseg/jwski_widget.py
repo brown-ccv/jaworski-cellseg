@@ -10,6 +10,7 @@ from .configuration_widget import create_configuration_widget
 import yaml
 from pathlib import Path
 
+
 class JaworskiWidget(QWidget):
     """
     A custom QWidget for napari that integrates multiple data-processing widgets
@@ -22,12 +23,12 @@ class JaworskiWidget(QWidget):
         self.viewer = napari_viewer
         self.physical_sizes = {"x": 0.0, "y": 0.0, "z": 0.0}
         # Read the configuration file
-        self.config_file_path = Path(__file__).parent / "config"  / "config.yaml"
+        self.config_file_path = Path(__file__).parent / "config" / "config.yaml"
         with open(self.config_file_path, "r") as f:
             self.config = yaml.safe_load(f)
-            settings = self.config.get('settings', {})
+            settings = self.config.get("settings", {})
             self.configurations = list(settings)
-            self.current_config = settings.get('default', {})
+            self.current_config = settings.get("default", {})
         self.init_ui()
 
     def init_ui(self):
@@ -36,28 +37,39 @@ class JaworskiWidget(QWidget):
         self.inferer_widget = Inferer(self.viewer)
         # Create each widget, passing the viewer to each
         default_index = self.configurations.index("default")
-        self.config_widget = create_configuration_widget(self.configurations,
-                                                         default_index,
-                                                         self.config_file_path,
-                                                         self)
+        self.config_widget = create_configuration_widget(
+            self.configurations, default_index, self.config_file_path, self
+        )
         self.data_widget = create_load_data_widget(self.viewer, self.physical_sizes)
         self.pre_process_data_widget = create_pre_process_data_widget(
             self.viewer, self.inferer_widget, self.current_config
         )
-        self.count_widget = create_label_counting_widget(self.viewer, self.physical_sizes)
+        self.count_widget = create_label_counting_widget(
+            self.viewer, self.physical_sizes
+        )
         self.region_selection_widget = create_region_selection_widget(self.viewer)
         self.configure_inferer_widget(self.inferer_widget)
 
-        # # Add widgets to the main layout
-        for widget in [
-            self.config_widget.native,
-            self.data_widget.native,
-            self.pre_process_data_widget.native,
-            self.count_widget.native,
-            self.region_selection_widget.native,
-            self.inferer_widget,
-        ]:
-            layout.addWidget(widget)
+        # Add widgets to the main layout
+        widget_attributes = [
+            "config_widget",
+            "data_widget",
+            "pre_process_data_widget",
+            "count_widget",
+            "region_selection_widget",
+            "inferer_widget",
+        ]
+
+        for attr in widget_attributes:
+            try:
+                widget = (
+                    getattr(self, attr).native
+                    if hasattr(getattr(self, attr), "native")
+                    else getattr(self, attr)
+                )
+                layout.addWidget(widget)
+            except AttributeError as e:
+                print(f"Attribute '{attr}' not found: {e}")
 
     def configure_inferer_widget(self, inferer_widget):
         """
@@ -72,11 +84,11 @@ class JaworskiWidget(QWidget):
         )
         inferer_widget.window_size_choice.setCurrentIndex(
             inferer_widget.window_size_choice.findText(
-                str(self.current_config["inference_window_size"])))
-        
-        inferer_widget.model_input_size.setValue(
-           self.current_config["inference_input"]
+                str(self.current_config["inference_window_size"])
+            )
         )
+
+        inferer_widget.model_input_size.setValue(self.current_config["inference_input"])
         inferer_widget.window_overlap_slider.setValue(
             self.current_config["inference_overlap"]
         )
@@ -103,7 +115,5 @@ class JaworskiWidget(QWidget):
             self.current_config["inference_instance_segmentation_outline_signma"]
         )
         voronoi_widget.counters[2].setValue(
-            self.current_config[
-                "inference_instance_segmentation_small_object_removal"
-            ]
+            self.current_config["inference_instance_segmentation_small_object_removal"]
         )
