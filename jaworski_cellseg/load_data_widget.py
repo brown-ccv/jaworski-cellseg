@@ -6,81 +6,86 @@ import tifffile
 import numpy as np
 
 
+def decode_resolution(res):
+    if res and isinstance(res.value, tuple):
+        return res.value[0] / res.value[1]
+    return res.value or 1.0
+
+
+# Read tiff files
+def handle_tiff(napari_viewer, file_path: Path, physical_sizes: dict):
+    """Handle loading and processing of TIFF files."""
+    bio_data = tifffile.imread(file_path)
+    transformed_data = np.moveaxis(bio_data, 1, 0)  # Adjust axis
+    napari_viewer.add_image(
+        transformed_data,
+        channel_axis=0,
+        name=[f"Channel {i}" for i in range(transformed_data.shape[0])],
+    )
+
+    # Extract physical sizes
+    with tifffile.TiffFile(file_path) as tiff:
+        page = tiff.pages[0]
+        x_resolution = page.tags.get("XResolution", None)
+        y_resolution = page.tags.get("YResolution", None)
+        # get imageJ metadata if exist, otherwise the or operator will return the empty dict
+        imagej_metadata = tiff.imagej_metadata or {}
+        z_physical_size = imagej_metadata.get("spacing", 1.0)
+        unit_name = imagej_metadata.get("unit", None)
+
+        x_res = decode_resolution(x_resolution)
+        y_res = decode_resolution(y_resolution)
+
+        physical_sizes.update(
+            {
+                "x": x_res,
+                "y": y_res,
+                "z": z_physical_size,
+                "unit": unit_name,
+            }
+        )
+
+
+# Read bio formart
+def handle_bioformats(napari_viewer, file_path: Path, physical_sizes: dict):
+    """Handle loading and processing of BioImage-compatible files"""
+    image = BioImage(file_path)
+    bio_data = image.get_image_data("CZYX")
+    napari_viewer.add_image(
+        bio_data,
+        channel_axis=0,
+        name=[f"Channel {i}" for i in range(bio_data.shape[0])],
+    )
+
+    # Extract physical sizes
+    metadata = image.metadata.images[0]
+    physical_sizes.update(
+        {
+            key: getattr(metadata.pixels, f"physical_size_{key}", 1.0)
+            for key in ["x", "y", "z"]
+        }
+        | {"unit": getattr(metadata.pixels, "physical_size_x_unit", None)}
+    )
+
+
 def jwslab_load_bio_data(
     napari_viewer: napari.Viewer, file_path: Path, physical_sizes: dict
 ):
-    try:
-        file_extension = file_path.suffix.lower()
-        if file_extension == ".tiff" or file_extension == ".tif":
-            # Load TIFF file using tifffile
-            bio_data = tifffile.imread(file_path)
-            transformed_data = np.moveaxis(bio_data, 1, 0)
-            napari_viewer.add_image(
-                transformed_data,
-                channel_axis=0,
-                name=[f"Channel {i}" for i in range(bio_data.shape[0])],
-            )
-            ## get physical size of the data
-            with tifffile.TiffFile(file_path) as tiff:
-                page = tiff.pages[0]
-                # Extract resolution-related tags
-                x_resolution = page.tags.get("XResolution", None)
-                y_resolution = page.tags.get("YResolution", None)
+    file_extension_handlers = {
+        ".tiff": handle_tiff,
+        ".tif": handle_tiff,
+        ".oir": handle_bioformats,
+        ".nd2": handle_bioformats,
+    }
 
-                unit_name = None
-                z_physical_size = 1.0
-                if tiff.imagej_metadata:
-                    unit_name = tiff.imagej_metadata["unit"]
-                    if "spacing" in tiff.imagej_metadata:
-                        z_physical_size = tiff.imagej_metadata["spacing"]
+    file_extension = file_path.suffix.lower()
 
-                print(x_resolution)
-                print(y_resolution)
-                # Decode values
-                if x_resolution and y_resolution:
-                    x_res = x_resolution.value
-                    y_res = y_resolution.value
+    # Find and execute the appropriate handler
+    handler = file_extension_handlers.get(file_extension, None)
+    if handler is None:
+        raise ValueError(f"Unsupported file format: {file_extension}")
 
-                    # physical size (numerator, denominator)
-                    x_res_value = (
-                        x_res[0] / x_res[1] if isinstance(x_res, tuple) else x_res
-                    )
-                    y_res_value = (
-                        y_res[0] / y_res[1] if isinstance(y_res, tuple) else y_res
-                    )
-                    xyz: dict = {
-                        "x": x_res_value,
-                        "y": y_res_value,
-                        "z": z_physical_size,
-                        "unit": unit_name,
-                    }
-                    physical_sizes.update(xyz)
-            print(physical_sizes)
-
-        elif file_extension in [".oir", ".nd2"]:
-            image = BioImage(file_path)
-            bio_data = image.get_image_data("CZYX")
-            napari_viewer.add_image(
-                bio_data,
-                channel_axis=0,
-                name=[f"Channel {i}" for i in range(bio_data.shape[0])],
-            )
-            ## get physical size of the data
-            metadata = image.metadata.images[0]
-            xyz: dict = {
-                key: getattr(metadata.pixels, f"physical_size_{key}")
-                for key in ["x", "y", "z"]
-            }
-
-            # Assume the same unit is used on every axis
-            xyz["unit"] = getattr(metadata.pixels, "physical_size_x_unit")
-            physical_sizes.update(xyz)
-
-        else:
-            # Raise exception for unsupported formats
-            raise ValueError(f"Unsupported file format: {file_extension}")
-    except Exception as e:
-        print(e)
+    handler(napari_viewer, file_path, physical_sizes)
 
 
 def create_load_data_widget(viewer: napari.Viewer, physical_sizes: dict):
