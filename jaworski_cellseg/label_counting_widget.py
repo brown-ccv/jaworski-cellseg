@@ -86,7 +86,9 @@ def create_label_counting_widget(viewer: napari.Viewer, physical_sizes: dict):
         count = len(filtered_labels_regions)
         cell_counting_widget.total_count.value = str(count)
 
-        viewer.add_labels(result_image, name=f"{count} Filtered Labled layer", opacity=1.0)
+        viewer.add_labels(
+            result_image, name=f"{count} Filtered Labled layer", opacity=1.0
+        )
 
         file_path = cell_counting_widget.save_results.value
         if file_path:
@@ -113,7 +115,7 @@ def create_label_counting_widget(viewer: napari.Viewer, physical_sizes: dict):
 
         # Get names of binary masks layers in the viewer
         binary_masks_layer_names = [
-            layer.name for layer in viewer.layers if "cloud binary" in layer.name
+            layer.name for layer in viewer.layers if "binary mask" in layer.name
         ]
         # Update the dropdown choices for label_layer_name
         cell_counting_widget.binary_layer_name.choices = binary_masks_layer_names
