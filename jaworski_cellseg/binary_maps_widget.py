@@ -14,7 +14,7 @@ def create_binary_map_widget(
     """
 
     @magicgui(
-        call_button="Create Binary Map",
+        call_button="Create Binary Mask",
         auto_call=False,
         channel_name={
             "widget_type": "ComboBox",
