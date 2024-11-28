@@ -16,7 +16,6 @@ def pre_process_bio_data(
     contrast_adjustment,
     contrast_lower,
     contrast_upper,
-    binary_map_threshold,
 ):
     try:
         channel_data = napari_viewer.layers["Channel 0"].data
@@ -37,15 +36,8 @@ def pre_process_bio_data(
             print(f"Applying Gaussian fileter sigma {gaussian_factor}")
             img_rescale = gaussian_filter(img_rescale, sigma=gaussian_factor)
 
-        cloud_channel = napari_viewer.layers["Channel 2"].data
-        cloud_percentile_float = np.percentile(
-            cloud_channel.astype(np.float64), binary_map_threshold
-        )
+        return img_rescale
 
-        # Create a binary mask using the percentile as a threshold
-        binary_mask = cloud_channel > cloud_percentile_float
-        binary_mask = remove_small_objects(binary_mask, min_size=100)
-        return img_rescale, binary_mask
     except Exception as e:
         print(e)
 
@@ -61,7 +53,6 @@ def create_pre_process_data_widget(
         contrast_adjustment={"label": "Contrast Adjustment (Percentiles)"},
         contrast_lower={"label": "min", "min": 0.0, "max": 100.0},
         contrast_upper={"label": "max", "min": 0.0, "max": 100.0},
-        binary_map_threshold={"label": "Binary Threshold", "min": 0.0, "max": 100.0},
     )
     def pre_process_data_widget(
         gaussian_checkbox: bool = config.get("gausianFilter", True),
@@ -69,20 +60,15 @@ def create_pre_process_data_widget(
         contrast_adjustment: bool = config.get("contrast_adjustment", True),
         contrast_lower: float = config.get("contrast_min", 5.0),
         contrast_upper: float = config.get("contrast_max", 95.0),
-        binary_map_threshold: float = config.get("binary_map_threshold", 90.0),
     ) -> "napari.types.LabelsData":
 
-        result_image, binary_mask = pre_process_bio_data(
+        result_image = pre_process_bio_data(
             viewer,
             gaussian_checkbox,
             gaussian_factor,
             contrast_adjustment,
             contrast_lower,
             contrast_upper,
-            binary_map_threshold,
-        )
-        viewer.add_image(
-            binary_mask, name=f"cloud binary mask perc={binary_map_threshold}"
         )
         viewer.add_image(result_image, name="Pre processed data")
         ## In case more layers are added, lets set the Tiff layer by default

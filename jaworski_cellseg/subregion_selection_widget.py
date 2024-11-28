@@ -45,7 +45,7 @@ def create_region_selection_widget(viewer: napari.Viewer):
 
         modified_data = binary_layer.data * mask_3d
 
-        viewer.add_image(modified_data, name="cloud binary region")
+        viewer.add_image(modified_data, name=f"{shape_layer_name} binary region")
 
     # Update dropdown menu options in the `region_selection_widget` to display
     # available shape and binary layers in the Napari viewer.
@@ -56,7 +56,7 @@ def create_region_selection_widget(viewer: napari.Viewer):
         for layer in viewer.layers:
             if isinstance(layer, Shapes):
                 shape_layer_names.append(layer.name)
-            if "cloud binary" in layer.name:
+            if "binary mask" in layer.name:
                 binary_layer_names.append(layer.name)
 
         # Update the dropdown choices for label_layer_name

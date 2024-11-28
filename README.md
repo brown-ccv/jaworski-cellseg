@@ -71,7 +71,21 @@ You may pre-process the image with a Gaussian filter and contrast adjustments. D
 
 This process creates 2 additional layers (Keep track of these):
 - Pre-processed Data: An enhanced version of the dataset that sharpens cell borders and brightens the interior of blobs to help identify multiple cells within a single blob.
-- Cloud Binary: A binary image representing the region of interest with the highest probability of containing cells.
+
+### Create binary mask
+
+To improve the precision of our cell detection efforts within a specific channel, it is essential to create a binary mask. A binary mask is a black-and-white image that defines regions of interest where there is a higher likelihood of locating cells. By combining the segmentation results with this binary mask, we can effectively filter out noise generated during the segmentation process. This approach ensures that the analysis focuses exclusively on potential cells within the specified regions, improving both accuracy and efficiency in cell detection.
+
+ <img src="images/README/binary_mask_widget.png" alt="bimary mask widget" 
+   width="320" height="150">
+
+
+Use the dropdown menu to select the channel from which you want to create the binary mask. The threshold setting specifies that only pixels with an intensity greater than the defined percentage of the channel's maximum intensity will be included in the mask. This approach helps isolate regions with a higher likelihood of containing cells, enabling a more targeted and precise analysis by focusing on areas of interest while minimizing irrelevant data. Click on the "Create binary Mask" to add the result to the napari viewer
+
+
+ <img src="images/README/example_binary_mask.png" alt="Example binary mask" 
+   width="320" height="300">
+
 
 
 ### Data Segmentation

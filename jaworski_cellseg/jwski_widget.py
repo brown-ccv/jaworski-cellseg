@@ -7,6 +7,7 @@ from .pre_process_data_widget import create_pre_process_data_widget
 from .label_counting_widget import create_label_counting_widget
 from .subregion_selection_widget import create_region_selection_widget
 from .configuration_widget import create_configuration_widget
+from .binary_maps_widget import create_binary_map_widget
 import yaml
 from pathlib import Path
 
@@ -44,6 +45,7 @@ class JaworskiWidget(QWidget):
         self.pre_process_data_widget = create_pre_process_data_widget(
             self.viewer, self.inferer_widget, self.current_config
         )
+        self.binary_map_widget = create_binary_map_widget(self.viewer)
         self.count_widget = create_label_counting_widget(
             self.viewer, self.physical_sizes
         )
@@ -56,6 +58,7 @@ class JaworskiWidget(QWidget):
             "config_widget",
             "data_widget",
             "pre_process_data_widget",
+            "binary_map_widget",
             "count_widget",
             "region_selection_widget",
             "inferer_widget",
