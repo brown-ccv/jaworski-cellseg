@@ -1,6 +1,6 @@
 [project]
 name = "jaworski-cellseg"
-version = "0.1.0"
+version = "1.0.0"
 description = "Cell labeling and counting for Jaworski Lab datasets"
 readme = "README.md"
 requires-python = ">=3.9"
@@ -28,3 +28,9 @@ line-length = 88
 [build-system]
 requires = ["setuptools", "wheel"]
 build-backend = "setuptools.build_meta"
+
+[dependency-groups]
+dev = [
+    "pytest-qt>=4.4.0",
+    "pytest>=8.3.4",
+]
